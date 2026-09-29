@@ -123,4 +123,4 @@ Audit results and release blockers: [docs/AUDIT.md](docs/AUDIT.md).
 Deployment guide and verified checks: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 Final local result: **81 tests**, typecheck, lint, production Webpack build and twelve
 production HTTP route checks pass. Deployment preflight deliberately fails until
-real HTTPS environment settings exist. Source is still local and uncommitted.
+real HTTPS environment settings exist. Source checkpoint is committed locally; see docs/PROGRESS.md for current hosted setup status.

@@ -3,7 +3,7 @@
 User authorized continuing sequentially through Phase 13 on 2026-09-29. This is
 still an MVP for a small tester group. Work one phase at a time and pass its checks
 before starting the next. This authorization supersedes older per-phase stop text.
-No deployment or invitation has happened. All code is local and uncommitted.
+No deployment or invitation has happened. The MVP is saved in local Git commit dbcb0aa; remote backup is being completed.
 
 - Phases 00–05: local implementation complete; 56 checks passed at Phase 05.
 - Phase 06: local implementation complete; 62 tests, typecheck, lint, build passed.
@@ -28,7 +28,7 @@ Supabase project are now configured without printing values. If configured, vali
 the target and dry-run/apply migrations, perform live schema/Auth/Storage tests, and
 finish trusted upload processing before invitations. Browser localhost access was
 previously blocked; do not bypass that restriction. No accounts need to be invented.
-Source changes are uncommitted/unpushed. No active temporary production server;
+Source checkpoint is committed locally (dbcb0aa); verify remote before claiming backup. No active temporary production server;
 existing development server may still run on port 3000.
 
 ## Live setup checkpoint — 2026-09-29
