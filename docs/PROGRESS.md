@@ -131,3 +131,15 @@ browser API mocks; real iPhone photo upload remains to verify.
 Pending externally: Google/Apple setup and email delivery/live auth checks from earlier
 checkpoints. Trusted upload boundary and operator readiness remain before invitations.
 This refresh does not change pending Vercel access-control approval or expose new data.
+
+Deployment complete: source `8dd1e5a` pushed; Vercel deployment
+`dpl_GZHUUsuKhcPkRz9Q4b8cyRNxgUtL` READY at https://studysocial-iota.vercel.app.
+Hosted build passes. Manifest declares standalone mode and `/feed` start; icon,
+Apple touch icon, offline HTML and worker endpoints return 200. Worker no-store
+header verified. The first metadata assertion used an outdated apple-prefixed
+capable tag; inspected installed Next 16 docs/output and verified the emitted
+`mobile-web-app-capable=yes`, Apple title/status bar, viewport-fit and manifest
+link instead. Temporary local test URL returns 404. Live welcome reviewed at 390px;
+proof saved outside repo as studysocial-review/simple-app-mobile.png. No real iPhone
+installation or end-to-end live upload is claimed. Final settings move preserves
+the existing school discovery privacy control under Account.
