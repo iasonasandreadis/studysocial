@@ -169,3 +169,12 @@ production build pass. Browser automation could not bind either Chrome or the
 existing in-app tab this session; no fresh mobile visual check or real iPhone
 interaction benchmark is claimed. No production posts/accounts were changed for
 verification. Existing beta release blockers remain; these are UX/performance fixes.
+
+Deployed to https://studysocial-iota.vercel.app as
+`dpl_FAxLatF1YDTGL23LxUsLuiSMTTLm`; deployment API confirms READY and `arn1`.
+Hosted Turbopack build passes. Anonymous Study/Settings responses contain the
+expected streaming login redirect; manifest returns 200. Public login total-time
+samples before: 3.272, 0.720, 0.485 seconds; after: 1.233, 0.424, 0.495 seconds.
+These three-request samples include cold-start/network variation and do not
+establish an authenticated interaction speedup. Code backed up in commit `856cc74`.
+No new human setup is needed for this update.
