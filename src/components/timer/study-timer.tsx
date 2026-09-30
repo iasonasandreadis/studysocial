@@ -55,8 +55,16 @@ export function StudyTimer({
   }, []);
   useEffect(() => {
     let mounted = true;
+    let syncing = false;
     async function sync() {
-      if (busy.current) return;
+      if (
+        busy.current ||
+        syncing ||
+        document.visibilityState !== "visible" ||
+        !navigator.onLine
+      )
+        return;
+      syncing = true;
       const seq = ++request.current;
       try {
         const next = await readTimer();
@@ -65,10 +73,12 @@ export function StudyTimer({
           setError("");
         }
       } catch {
-        if (mounted)
+        if (mounted && seq === request.current)
           setError(
             "Timer could not sync. Saved study time continues; reconnect and sync before making a change.",
           );
+      } finally {
+        syncing = false;
       }
     }
     const focus = () => {
@@ -130,7 +140,6 @@ export function StudyTimer({
           const s = result.snapshot.session;
           if (s?.status === "completed") {
             router.push(`/sessions/${s.id}`);
-            router.refresh();
           } else if (s?.status === "discarded") {
             router.refresh();
             apply({ ...result.snapshot, session: null });
@@ -147,10 +156,9 @@ export function StudyTimer({
     });
   return (
     <section className="onboarding-card timer-card">
-      <p className="eyebrow">ONE THING AT A TIME</p>
-      <h1>{session ? "Make room for focus." : "Your next study moment."}</h1>
+      <h1>Study</h1>
       <p className="account-description">
-        Your sessions and notes are private. Nothing is posted automatically.
+        Sessions stay private until you choose to share.
       </p>
       {!session ? (
         <form
@@ -206,8 +214,7 @@ export function StudyTimer({
             {clockLabel(seconds)}
           </div>
           <p className="field-hint">
-            Pauses don’t count. Time is saved from server timestamps, up to 24
-            hours per session.
+            Pauses don’t count. Sessions can last up to 24 hours.
           </p>
           <div className="timer-controls">
             <button
@@ -227,31 +234,35 @@ export function StudyTimer({
               Finish and save
             </button>
           </div>
-          <div className="account-form">
-            <label>
-              Private note <span className="optional">(optional)</span>
-              <textarea
-                maxLength={2000}
-                rows={3}
-                value={note}
+          <details className="optional-details">
+            <summary>Private note</summary>
+            <div className="account-form">
+              <label>
+                Private note <span className="optional">(optional)</span>
+                <textarea
+                  maxLength={2000}
+                  rows={3}
+                  value={note}
+                  disabled={pending}
+                  onChange={(e) => {
+                    dirty.current = true;
+                    setNote(e.target.value);
+                  }}
+                />
+              </label>
+              <button
+                className="text-button"
                 disabled={pending}
-                onChange={(e) => {
-                  dirty.current = true;
-                  setNote(e.target.value);
-                }}
-              />
-            </label>
-            <button
-              className="text-button"
-              disabled={pending}
-              onClick={() => act("note")}
-            >
-              Save note
-            </button>
-            <p className="field-hint">
-              Save your note before leaving this page. Finishing also saves it.
-            </p>
-          </div>
+                onClick={() => act("note")}
+              >
+                Save note
+              </button>
+              <p className="field-hint">
+                Save your note before leaving this page. Finishing also saves
+                it.
+              </p>
+            </div>
+          </details>
           <details className="post-delete">
             <summary>Discard session</summary>
             <p className="field-hint">

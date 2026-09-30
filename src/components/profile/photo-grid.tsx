@@ -1,3 +1,4 @@
+import { signedPostImages } from "@/lib/posts/signed-images";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
@@ -24,23 +25,21 @@ export async function PhotoGrid({
     .order("id")
     .range(page * 24, page * 24 + 24);
   if (error) throw new Error("Couldn’t load these photos.");
-  const posts = await Promise.all(
-    (data ?? []).slice(0, 24).map(async (post) => {
-      const media = Array.isArray(post.post_media)
-        ? post.post_media[0]
-        : post.post_media;
-      const result = media
-        ? await supabase.storage
-            .from("post-images")
-            .createSignedUrl(media.object_path, 60)
-        : null;
-      return {
-        id: post.id,
-        alt: media?.alt_text || post.caption?.slice(0, 100) || "Photo post",
-        url: result?.data?.signedUrl,
-      };
-    }),
+  const visible = (data ?? []).slice(0, 24).map((post) => ({
+    ...post,
+    media: Array.isArray(post.post_media)
+      ? post.post_media[0]
+      : post.post_media,
+  }));
+  const images = await signedPostImages(
+    supabase,
+    visible.map((post) => post.media?.object_path),
   );
+  const posts = visible.map((post) => ({
+    id: post.id,
+    alt: post.media?.alt_text || post.caption?.slice(0, 100) || "Photo post",
+    url: post.media ? images.get(post.media.object_path) : undefined,
+  }));
   return (
     <section className="profile-photos" aria-label="Photo posts">
       <h2 className="section-title">Posts</h2>

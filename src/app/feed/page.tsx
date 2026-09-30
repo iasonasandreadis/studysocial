@@ -1,3 +1,4 @@
+import { signedPostImages } from "@/lib/posts/signed-images";
 import Link from "next/link";
 import { ProfileShell } from "@/components/profile/profile-shell";
 import { PostCard } from "@/components/feed/post-card";
@@ -19,18 +20,15 @@ export default async function Feed({
   });
   if (error) throw new Error("We couldn’t load your feed.");
   const rows = (data ?? []) as FeedPost[];
-  const posts = await Promise.all(
-    rows.slice(0, 20).map(async (post) => {
-      let imageUrl: string | null = null;
-      if (post.image_path) {
-        const { data } = await supabase.storage
-          .from("post-images")
-          .createSignedUrl(post.image_path, 60);
-        imageUrl = data?.signedUrl ?? null;
-      }
-      return { ...post, imageUrl };
-    }),
+  const visible = rows.slice(0, 20);
+  const images = await signedPostImages(
+    supabase,
+    visible.map((post) => post.image_path),
   );
+  const posts = visible.map((post) => ({
+    ...post,
+    imageUrl: post.image_path ? (images.get(post.image_path) ?? null) : null,
+  }));
   return (
     <ProfileShell>
       <h1 className="sr-only">Home feed</h1>

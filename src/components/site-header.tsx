@@ -44,8 +44,8 @@ export function SiteHeader() {
             <Link
               className="icon-button"
               href="/account"
-              aria-label="Settings and study tools"
-              title="Settings"
+              aria-label="Menu"
+              title="Menu"
             >
               <Icon name="menu" />
             </Link>

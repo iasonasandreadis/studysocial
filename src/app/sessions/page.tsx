@@ -1,3 +1,4 @@
+import { StudyNavigation } from "@/components/timer/study-navigation";
 import Link from "next/link";
 import { requireOnboarded } from "@/lib/auth/session";
 import { ProfileShell } from "@/components/profile/profile-shell";
@@ -29,6 +30,7 @@ export default async function Sessions({
   if (error) throw new Error("Couldn’t load your sessions.");
   return (
     <ProfileShell>
+      <StudyNavigation current="history" />
       <section className="onboarding-card">
         <p className="eyebrow">YOUR PRIVATE STUDY HISTORY</p>
         <h1>One session at a time.</h1>

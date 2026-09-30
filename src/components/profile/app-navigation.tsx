@@ -6,6 +6,7 @@ const links: { href: string; label: string; icon: IconName }[] = [
   { href: "/feed", label: "Home", icon: "home" },
   { href: "/discover", label: "Friends and clubs", icon: "search" },
   { href: "/posts/new", label: "New post", icon: "plus" },
+  { href: "/study", label: "Study timer", icon: "clock" },
   { href: "/me", label: "Profile", icon: "user" },
 ];
 export function AppNavigation() {
@@ -36,7 +37,9 @@ export function AppNavigation() {
             path === l.href ||
             (l.href === "/me" &&
               (path.startsWith("/u/") || path === "/profile/edit")) ||
-            (l.href === "/discover" && path.startsWith("/communities"))
+            (l.href === "/discover" && path.startsWith("/communities")) ||
+            (l.href === "/study" &&
+              (path === "/progress" || path.startsWith("/sessions")))
               ? "page"
               : undefined
           }

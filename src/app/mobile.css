@@ -92,7 +92,7 @@ body:has(.app-navigation) {
   transform: translateX(-50%);
   width: min(632px, 100%);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0;
   margin: 0;
   padding: 8px 12px calc(8px + env(safe-area-inset-bottom));

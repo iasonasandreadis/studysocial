@@ -1,3 +1,4 @@
+import { StudyNavigation } from "@/components/timer/study-navigation";
 import Link from "next/link";
 import { studyDateLabel } from "@/lib/stats/date";
 import { requireOnboarded } from "@/lib/auth/session";
@@ -14,6 +15,7 @@ export default async function Progress() {
     largest = Math.max(1, ...s.daily.map((d) => d.seconds));
   return (
     <ProfileShell>
+      <StudyNavigation current="progress" />
       <header className="feed-heading">
         <p className="eyebrow">PROGRESS AT YOUR PACE</p>
         <h1>Small steps add up.</h1>

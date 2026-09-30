@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { StudyNavigation } from "@/components/timer/study-navigation";
 import { randomUUID } from "node:crypto";
 import { requireOnboarded } from "@/lib/auth/session";
 import { ProfileShell } from "@/components/profile/profile-shell";
@@ -19,9 +19,7 @@ export default async function Study() {
   if (s.error || c.error) throw new Error("We couldn’t load your timer.");
   return (
     <ProfileShell>
-      <Link className="text-button" href="/progress">
-        Your private progress →
-      </Link>
+      <StudyNavigation current="timer" />
       <StudyTimer
         initial={s.data as TimerSnapshot}
         subjects={c.data ?? []}

@@ -143,3 +143,29 @@ link instead. Temporary local test URL returns 404. Live welcome reviewed at 390
 proof saved outside repo as studysocial-review/simple-app-mobile.png. No real iPhone
 installation or end-to-end live upload is claimed. Final settings move preserves
 the existing school discovery privacy control under Account.
+
+## September 30 — restore Study and reduce interaction delays
+
+Main navigation is Home, Discover, Create, Study and Profile. Study has Timer,
+Progress and History tabs. The header menu now contains clubs, follow requests,
+posts/drafts and profile editing; account/password, safety, school discovery and
+logout are under Settings. Changing email is not implemented by this change.
+Finishing a session still opens its saved summary and optional sharing composer.
+
+Performance changes:
+- Vercel function region configured as Stockholm (`arn1`), beside Supabase's
+  Stockholm database. The prior project default was Washington (`iad1`).
+- Feed/profile images use one session-authorized batch signing request instead
+  of up to 20/24 requests. Existing Storage RLS and 60-second expiry remain.
+- Likes preview immediately with React optimistic state and roll back on failure.
+- Follow changes invalidate affected routes instead of the root layout.
+- Timer sync skips hidden/offline pages and overlapping background reads; stale
+  errors cannot overwrite a newer mutation. Removed the extra refresh after finish.
+- Public PWA assets no longer enter the auth-refresh proxy.
+
+Verification: 91 tests pass, including batch signing denied/missing paths, existing
+follow authorization and timer lifecycle tests. Typecheck, lint and local Webpack
+production build pass. Browser automation could not bind either Chrome or the
+existing in-app tab this session; no fresh mobile visual check or real iPhone
+interaction benchmark is claimed. No production posts/accounts were changed for
+verification. Existing beta release blockers remain; these are UX/performance fixes.

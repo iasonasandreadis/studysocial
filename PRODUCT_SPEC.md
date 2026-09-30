@@ -4,7 +4,7 @@
 StudySocial is a mobile-first consumer social network built around studying:
 **“Strava × studying × modern social media.”** Make study effort visible, give
 students a supportive circle, and help them return to their next study session.
-The September 30 product direction is a simple, fun, photo-first student social app: study selfies, memes, breaks, friends and clubs. Study tracking is optional. The latest user revision requires a neutral black-and-white interface, persistent icon navigation, a simple photo composer and an installable Home Screen web app. Offer Apple then Google sign-in when configured, with email as a fallback.
+The September 30 product direction is a simple, fun, photo-first student social app: study selfies, memes, breaks, friends and clubs. The study timer is a central feature and must be one tap away in the main navigation. Timer, progress and history belong together; everyday shortcuts live in Menu, with account/security controls in Settings. The latest user revision requires a neutral black-and-white interface, persistent icon navigation, a simple photo composer and an installable Home Screen web app. Offer Apple then Google sign-in when configured, with email as a fallback.
 The core loop is **STUDY → CAPTURE → SHARE → INTERACT → DISCOVER → GET MOTIVATED → STUDY AGAIN**.
 
 The first audience is Greek high-school students preparing for Panhellenic exams.

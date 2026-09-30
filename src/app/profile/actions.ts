@@ -27,7 +27,11 @@ export async function changeRelationship(
   } catch {
     return { error: "We couldn’t save this change. Please try again." };
   }
-  revalidatePath("/", "layout");
+  revalidatePath("/u", "layout");
+  revalidatePath("/feed");
+  revalidatePath("/discover");
+  revalidatePath("/requests");
+  revalidatePath("/communities", "layout");
   const messages: Record<string, string> = {
     follow: "Your follow has been saved. Private profiles require approval.",
     unfollow: "Unfollowed.",
