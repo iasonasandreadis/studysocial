@@ -74,3 +74,28 @@ configuration-only change; hosted schema checks now also pass.
 - Next: configure Google after terms approval, Apple after membership confirmation,
   custom email delivery, upload hardening, authenticated live checks. Do not invite
   external testers based on the successful build alone.
+
+### Hosting verification
+Configured deployment `dpl_2g5eJ6kuE2SShiToWrtWN3TmqTP2` is READY at
+https://studysocial-iota.vercel.app with source commit `339d52d` pushed to GitHub.
+Final local Webpack build and hosted Turbopack build pass. Deployment environment
+syntax preflight passes with the HTTPS origin. Hosted landing/signup/login return
+200; protected feed redirects to login; malformed confirmation redirects to the
+fixed local login error page. Frame denial and private no-store auth headers checked.
+Hosted mobile landing/signup inspected in Chrome at 390px. No authenticated account
+was created or changed, and email/OAuth success is not claimed.
+
+Correction to protection assumptions: Vercel Standard Protection leaves the canonical
+production domain public (anonymous request 200), although individual deployment URLs
+require Vercel login. Automatic approval review blocked changing this to all URLs
+because explicit authorization is needed. User approval is pending; no protection
+change or paid upgrade occurred. Do not describe the canonical URL as access-limited.
+Google Cloud terms and Apple membership answers are also pending. Browser handoff
+keeps the Google terms page open. Latest screenshots are outside the repository in
+`/Users/iasonasandreadis/studysocial-review/`.
+
+The initial HTTP smoke expected a redirect status for `/feed` and failed that
+assertion. Next streams this route with HTTP 200 plus a login redirect. Follow-up
+confirmed the refresh meta and `NEXT_REDIRECT` both target `/login`, and no feed
+heading/content is present. This is not an authorization failure or an all-green
+claim for the original status-only smoke script.

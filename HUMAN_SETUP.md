@@ -4,8 +4,10 @@
 Supabase is connected; all twelve migrations and hosted schema checks passed.
 The Vercel project is `jasontest1/studysocial`, using Node 24 and HTTPS origin
 `https://studysocial-iota.vercel.app`. This is an owner preview, not tester approval.
-Vercel authentication remains enabled; sign into your Vercel account on your phone
-when prompted. No paid upgrade was made. See docs/PROGRESS.md for deployment checks.
+Vercel protects deployment URLs, but the canonical production address is PUBLIC
+under its default Standard Protection. Restricting all URLs awaits explicit user
+approval after auto-review rejected that access-control change. No paid upgrade
+was made. See docs/PROGRESS.md for deployment checks.
 
 ## What needs your input now
 - **Google:** Google Cloud account `iasonasandreadis@gmail.com` currently needs

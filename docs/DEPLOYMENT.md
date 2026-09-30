@@ -4,7 +4,10 @@
 Supabase is linked and initialized. Source is backed up on GitHub. Vercel project
 `jasontest1/studysocial` was created using the existing CLI login; no paid services.
 Canonical origin: `https://studysocial-iota.vercel.app`. Vercel assigned the first
-build to its production target, but deployment authentication remains enabled.
+build to its production target. Standard Protection authenticates individual
+deployment URLs but leaves the canonical production domain PUBLIC. This was
+verified with an anonymous HTTP request (200). Setting protection to all deployments
+was rejected by auto-review pending explicit user authorization.
 This is an owner preview, not a public tester release. The first build intentionally
 had no app credentials; subsequent configured builds are recorded in PROGRESS.md.
 
