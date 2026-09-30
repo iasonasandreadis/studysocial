@@ -204,3 +204,9 @@ resize bounds. Hosted migration applied and DB lint passes. Local preview checke
 at 320px, 390px and 1280px, without horizontal overflow; button contrast checked
 in both themes. Preview used clearly labelled example values and was removed
 before deployment. Screenshot: ../studysocial-review/progress-refresh.png.
+
+Deployment `dpl_FagyqTpM8GxLRuUrVktpAGjczgUi` is READY at
+https://studysocial-iota.vercel.app, source `2a9a0a1` pushed to GitHub.
+Final local/hosted builds, lint and typecheck passed. Public home returns 200;
+temporary `/ui-review` returns 404. No live personal posts, replies or profile
+photos were created during verification. No new human setup is required.
