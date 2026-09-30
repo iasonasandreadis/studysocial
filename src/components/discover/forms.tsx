@@ -87,7 +87,7 @@ export function CommunityForm({
           <textarea name="description" maxLength={1000} rows={3} />
         </label>
         <label>
-          Community type
+          Club type
           <select name="kind" defaultValue="school">
             {["school", "university", "subject", "exam", "goal", "group"].map(
               (k) => (
@@ -117,12 +117,11 @@ export function CommunityForm({
           </select>
         </label>
         <p className="field-hint">
-          These are student-created communities, not official school accounts. A
-          private community’s details are visible only to members; people with
-          its link can request to join.
+          Clubs are created by students. A private club’s details are visible
+          only to members; people with its link can request to join.
         </p>
         <button className="button">
-          {pending ? "Creating…" : "Create community"}
+          {pending ? "Creating…" : "Create club"}
         </button>
       </fieldset>
       {state.error && (

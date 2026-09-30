@@ -1,3 +1,4 @@
+import { ShareButton } from "@/components/posts/share-button";
 import Link from "next/link";
 import { ReportControl } from "@/components/safety/controls";
 import { randomUUID } from "node:crypto";
@@ -93,8 +94,11 @@ export default async function PostDetail({
         >
           ← {own ? "My posts" : "Author profile"}
         </Link>
-        <p className="eyebrow">STUDY MOMENT</p>
-        <h1>{author.data.display_name}’s study post</h1>
+
+        <div className="post-title-row">
+          <h1>{author.data.display_name}</h1>
+          <ShareButton path={`/posts/${id}`} />
+        </div>
         <Link className="text-button" href={`/u/${author.data.handle}`}>
           @{author.data.handle}
         </Link>
@@ -144,10 +148,7 @@ export default async function PostDetail({
           >
             <Kudos id={id} activity={activity} />
             <h2 id="comments-title">Comments · {activity.comment_count}</h2>
-            <p className="field-hint">
-              Counts and comments exclude blocked accounts. Newest comments
-              appear first.
-            </p>
+
             <CommentForm postId={id} id={randomUUID()} />
             {comments.length ? (
               <ul className="comment-list">
@@ -212,7 +213,10 @@ export default async function PostDetail({
                     : "Anyone signed in, except blocked accounts"}
               .
             </p>
-            <DeletePostForm id={id} state={post.publication_state} />
+            <details className="optional-details">
+              <summary>Manage post</summary>
+              <DeletePostForm id={id} state={post.publication_state} />
+            </details>
           </>
         )}
       </article>

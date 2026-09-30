@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/ui/icon";
 import { useActionState } from "react";
 import { changeKudos, addComment, removeComment } from "@/app/feed/actions";
 import type { Activity } from "@/lib/feed/types";
@@ -16,14 +17,11 @@ export function Kudos({ id, activity }: { id: string; activity: Activity }) {
         className="kudos-button"
         type="submit"
         aria-pressed={activity.has_kudos}
+        aria-label={activity.has_kudos ? "Unlike post" : "Like post"}
         disabled={pending}
       >
-        {pending
-          ? "Saving…"
-          : activity.has_kudos
-            ? "♥ Kudos given"
-            : "♡ Give kudos"}{" "}
-        <span>· {activity.kudos_count}</span>
+        <Icon name="heart" filled={activity.has_kudos} />
+        <span>{activity.kudos_count}</span>
       </button>
       {state.error && (
         <p className="form-error" role="alert">

@@ -71,17 +71,14 @@ export default async function Community({
         <p className="eyebrow">{c.visibility} · STUDENT COMMUNITY</p>
         <h1>{c.name}</h1>
         <p className="post-caption">
-          {c.description ??
-            "Community details are private. Request access using this link."}
+          {c.description ?? "This club is private. Request to join."}
         </p>
         {c.member ? (
           <>
             <Link className="button" href={`/posts/new?community=${id}`}>
               Share a study moment
             </Link>
-            {!c.own && (
-              <Membership id={id} action="leave" label="Leave community" />
-            )}
+            {!c.own && <Membership id={id} action="leave" label="Leave club" />}
           </>
         ) : (
           <Membership
@@ -92,7 +89,7 @@ export default async function Community({
                 ? "Cancel join request"
                 : c.visibility === "private"
                   ? "Request to join"
-                  : "Join community"
+                  : "Join club"
             }
           />
         )}

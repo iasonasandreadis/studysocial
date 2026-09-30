@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Icon } from "@/components/ui/icon";
 export function SiteHeader() {
   const path = usePathname();
   const publicPage = [
@@ -12,29 +13,43 @@ export function SiteHeader() {
     "/reset-password",
   ].includes(path);
   return (
-    <header className="site-header container">
+    <header
+      className={`site-header container ${publicPage ? "public-header" : "app-header"}`}
+    >
       <Link
         className="wordmark"
         href={publicPage ? "/" : "/feed"}
         aria-label="StudySocial home"
       >
-        <span className="brand-mark" aria-hidden="true">
-          s<span>·</span>
-        </span>
         studysocial<span className="wordmark-dot">.</span>
       </Link>
       <nav aria-label="Main navigation">
         {publicPage ? (
+          <Link
+            href={path === "/login" ? "/signup" : "/login"}
+            className="text-button"
+          >
+            {path === "/login" ? "Sign up" : "Log in"}
+          </Link>
+        ) : (
           <>
-            <Link href="/login">Log in</Link>
-            <Link href="/signup" className="nav-pill">
-              Sign up
+            <Link
+              className="icon-button"
+              href="/notifications"
+              aria-label="Notifications"
+              title="Notifications"
+            >
+              <Icon name="bell" />
+            </Link>
+            <Link
+              className="icon-button"
+              href="/account"
+              aria-label="Settings and study tools"
+              title="Settings"
+            >
+              <Icon name="menu" />
             </Link>
           </>
-        ) : (
-          <Link className="nav-pill" href="/discover">
-            Find clubs ↗
-          </Link>
         )}
       </nav>
     </header>

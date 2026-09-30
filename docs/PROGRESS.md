@@ -99,3 +99,35 @@ assertion. Next streams this route with HTTP 200 plus a login redirect. Follow-u
 confirmed the refresh meta and `NEXT_REDIRECT` both target `/login`, and no feed
 heading/content is present. This is not an authorization failure or an all-green
 claim for the original status-only smoke script.
+
+## Simpler Home Screen app — 2026-09-30
+User rejected the website-like interaction and colourful theme. Replaced the visible
+shell with neutral light/dark surfaces, a persistent header and four labelled icon
+controls (home, search, create, profile). Study tools/settings live on `/account`.
+Removed marketing footer and feed ranking exposition. Simplified discovery to People
+and Clubs, avoiding seven separate discovery queries and dense empty sections.
+
+Profiles now show actual published photo grids through the session-scoped RLS client;
+own private posts remain visible to their author, other viewers keep existing access
+rules. No privileged data lookup or migration was performed. Post share uses the native
+share sheet or clipboard without changing audience. Composer shows a photo picker,
+caption, audience, Next; optional fields live under one disclosure. Large supported
+phone images resize to fit the existing server limit, with server validation retained.
+
+Added standalone manifest, 192/512/maskable icons, Apple touch icon and web-app metadata,
+viewport safe areas, generic offline screen and connectivity notice. Worker caches
+only the generic offline page, never account/post/API/image responses. Home Screen
+start URL is `/feed`; signed-in visitors to `/` return to the app. Old shortcuts may
+need re-adding in Safari. No claim of actual iPhone installation testing.
+
+Verification: all 89 tests, TypeScript, lint and final local Webpack build passed.
+Mobile feed/composer reviewed at 390px and 320px using a clearly labelled temporary
+local layout screen; no real/fake accounts were created and the screen was removed
+before production build. No horizontal overflow. A browser file-picker test could
+not select a local file because the extension disallows file URL access. No permission
+was bypassed. Resize validation, bounds, aspect ratio and resource cleanup tested with
+browser API mocks; real iPhone photo upload remains to verify.
+
+Pending externally: Google/Apple setup and email delivery/live auth checks from earlier
+checkpoints. Trusted upload boundary and operator readiness remain before invitations.
+This refresh does not change pending Vercel access-control approval or expose new data.

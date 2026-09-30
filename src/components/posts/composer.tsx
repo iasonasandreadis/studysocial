@@ -3,7 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { publishPost } from "@/app/posts/actions";
-import { MAX_POST_IMAGE_BYTES, validatePost } from "@/lib/posts/validation";
+import { preparePhoto } from "@/lib/posts/prepare-photo";
+import { validatePost } from "@/lib/posts/validation";
 import { durationLabel, type CompletedSession } from "@/lib/posts/types";
 import type { CatalogOption } from "@/lib/onboarding/types";
 export function Composer({
@@ -23,6 +24,7 @@ export function Composer({
   communities: { id: string; name: string }[];
   initialCommunity?: string;
 }) {
+  const [preparing, setPreparing] = useState(false);
   const [community, setCommunity] = useState(initialCommunity ?? "");
   const [state, action, pending] = useActionState(publishPost, {});
   const [file, setFile] = useState<File | null>(null),
@@ -84,49 +86,64 @@ export function Composer({
           you preview and confirm.
         </p>
       )}
-      <fieldset disabled={pending}>
+      <fieldset disabled={pending || preparing}>
         <div hidden={preview}>
-          <label>
-            Photo
+          <label className="photo-picker">
+            <span className="photo-picker-icon" aria-hidden="true">
+              ＋
+            </span>
+            {file ? "Change photo" : "Choose a photo"}
             <input
               type="file"
               name="image"
               accept="image/jpeg,image/png,image/webp"
               required
-              onChange={(e) => {
-                const chosen = e.target.files?.[0] ?? null;
+              onChange={async (e) => {
+                const input = e.currentTarget;
+                const chosen = input.files?.[0] ?? null;
                 setError("");
                 setPreview(false);
-                if (
-                  chosen &&
-                  (chosen.size > MAX_POST_IMAGE_BYTES ||
-                    !["image/jpeg", "image/png", "image/webp"].includes(
-                      chosen.type,
-                    ))
-                ) {
-                  e.target.value = "";
-                  setFile(null);
-                  setUrl("");
+                setFile(null);
+                setUrl("");
+                if (!chosen) return;
+                setPreparing(true);
+                try {
+                  const photo = await preparePhoto(chosen);
+                  const transfer = new DataTransfer();
+                  transfer.items.add(photo);
+                  input.files = transfer.files;
+                  setFile(photo);
+                  setUrl(URL.createObjectURL(photo));
+                } catch (error) {
+                  input.value = "";
                   setError(
-                    "Choose a still JPEG, PNG or WebP image up to 3 MB.",
+                    error instanceof Error && error.name === "Error"
+                      ? error.message
+                      : "Couldn’t open this photo. Try a JPEG, PNG or WebP image.",
                   );
-                  return;
+                } finally {
+                  setPreparing(false);
                 }
-                setFile(chosen);
-                setUrl(chosen ? URL.createObjectURL(chosen) : "");
               }}
             />
-            <span className="field-hint">
-              One still photo, up to 3 MB and 40 megapixels. Check for names,
-              addresses or other personal details visible in the photo.
-            </span>
+            <span className="field-hint">Tap to choose from your photos</span>
           </label>
+          {url && (
+            <Image
+              className="composer-thumbnail"
+              src={url}
+              alt="Selected photo"
+              width={600}
+              height={600}
+              unoptimized
+            />
+          )}
           <label>
             Caption <span className="optional">(optional)</span>
             <textarea
               name="caption"
               maxLength={2200}
-              rows={3}
+              rows={2}
               placeholder="A study selfie, a meme, a little win…"
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
@@ -134,9 +151,9 @@ export function Composer({
           </label>
           <details
             className="optional-details"
-            open={initialSession ? true : undefined}
+            open={initialSession || initialCommunity ? true : undefined}
           >
-            <summary>Add study details or an image description</summary>
+            <summary>More options</summary>
             <label>
               Image description <span className="optional">(optional)</span>
               <input
@@ -234,26 +251,27 @@ export function Composer({
                 )}
               </p>
             )}
+
+            <label>
+              Club <span className="optional">(optional)</span>
+              <select
+                name="community_id"
+                value={community}
+                onChange={(e) => setCommunity(e.target.value)}
+              >
+                <option value="">No club</option>
+                {communities.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+              <span className="field-hint">
+                Only communities you belong to are listed. Posting here does not
+                override your account or post privacy.
+              </span>
+            </label>
           </details>
-          <label>
-            Club <span className="optional">(optional)</span>
-            <select
-              name="community_id"
-              value={community}
-              onChange={(e) => setCommunity(e.target.value)}
-            >
-              <option value="">No club</option>
-              {communities.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-            <span className="field-hint">
-              Only communities you belong to are listed. Posting here does not
-              override your account or post privacy.
-            </span>
-          </label>
           <label>
             Who can see this?
             <select
@@ -266,10 +284,14 @@ export function Composer({
               <option value="public">Anyone signed in</option>
             </select>
             <span className="field-hint">
-              {audienceText}. A private account always limits posts to approved
-              followers. If you later make your account public, “Anyone signed
-              in” posts become visible to all signed-in people except blocked
-              accounts.
+              {audience === "private"
+                ? "Only you can see this post."
+                : isPrivate
+                  ? "Your account is private. Only approved followers can see this."
+                  : `${audienceText}.`}
+              {audience === "public" &&
+                isPrivate &&
+                " This becomes public if you make your account public."}
             </span>
           </label>
           <button
@@ -290,7 +312,7 @@ export function Composer({
               setPreview(true);
             }}
           >
-            Preview post <span aria-hidden="true">→</span>
+            Next <span aria-hidden="true">→</span>
           </button>
         </div>
         {preview && (
@@ -348,7 +370,7 @@ export function Composer({
                 Back to edit
               </button>
               <button type="submit" className="button" disabled={pending}>
-                {pending ? "Uploading and publishing…" : "Publish post"}
+                {pending ? "Sharing…" : "Share post"}
               </button>
             </div>
           </section>
@@ -370,7 +392,11 @@ export function Composer({
         </Link>
       )}
       <p role="status" className="field-hint">
-        {pending ? "Keep this page open while your photo uploads." : ""}
+        {preparing
+          ? "Preparing your photo…"
+          : pending
+            ? "Keep this page open while your photo uploads."
+            : ""}
       </p>
     </form>
   );

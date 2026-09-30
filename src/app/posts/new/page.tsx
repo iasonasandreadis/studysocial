@@ -87,11 +87,8 @@ export default async function NewPost({
   return (
     <ProfileShell>
       <section className="onboarding-card">
-        <p className="eyebrow">YOUR MOMENT</p>
-        <h1>Post a moment.</h1>
-        <p className="account-description">
-          Desk selfies, study breaks, memes. Whatever made your day.
-        </p>
+        <h1>New post</h1>
+
         <Composer
           id={randomUUID()}
           isPrivate={profile.data.is_private}

@@ -1,10 +1,10 @@
-import { StatusPanel } from "@/components/status-panel";
 export default function Loading() {
   return (
-    <main id="main" className="container">
-      <StatusPanel title="Getting things ready…" loading>
-        <p>Just a moment. Your next chapter is on its way.</p>
-      </StatusPanel>
+    <main id="main" className="container profile-shell">
+      <div className="screen-loading" role="status">
+        <span className="loading-ring" aria-hidden="true" />
+        <span className="sr-only">Loading…</span>
+      </div>
     </main>
   );
 }

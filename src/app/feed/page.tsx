@@ -33,11 +33,7 @@ export default async function Feed({
   );
   return (
     <ProfileShell>
-      <header className="feed-heading">
-        <p className="eyebrow">A LITTLE PROGRESS, TOGETHER</p>
-        <h1>Your people. Your day.</h1>
-        <p>Study selfies, little wins, and everything in between.</p>
-      </header>
+      <h1 className="sr-only">Home feed</h1>
       <nav className="feed-tabs" aria-label="Feed mode">
         <Link
           href="/feed?mode=for-you"
@@ -49,25 +45,9 @@ export default async function Feed({
           href="/feed?mode=community"
           aria-current={mode === "community" ? "page" : undefined}
         >
-          Following & clubs
+          Following
         </Link>
       </nav>
-      <details className="feed-explanation">
-        <summary>How this feed is ordered</summary>
-        <p>
-          Among up to 500 accessible posts from the last 90 days: follows add 40
-          points, your subjects add 20 in For You, and joined communities add
-          15. Visible kudos and comments add up to 10. Recency adds up to 30,
-          falling by one point per day. Ties use time and post ID.
-        </p>
-        <p>
-          Community includes followed people, your shared posts and permitted
-          posts in communities you belong to. Private school details and goals
-          aren’t used. Counts exclude interactions from accounts you have
-          blocked or that blocked you. Refresh for the latest order; pages can
-          shift as activity changes.
-        </p>
-      </details>
       {posts.length ? (
         <div className="feed-list">
           {posts.map((post) => (
@@ -81,21 +61,21 @@ export default async function Feed({
             {page
               ? "You’ve reached the end."
               : mode === "community"
-                ? "Your circle starts with a connection."
-                : "Your feed starts with you."}
+                ? "Find your people."
+                : "No posts yet."}
           </h2>
           <p>
             {page
               ? "Return to the first page for the latest study moments."
               : mode === "community"
                 ? "Follow someone from their profile to see their shared study moments here."
-                : "No posts to show yet. Share your first photo, or find friends and clubs to fill your feed."}
+                : "Add friends or share your first photo."}
           </p>
           <Link
             className="button"
             href={page ? `/feed?mode=${mode}` : "/posts/new"}
           >
-            {page ? "Back to latest" : "Create a post"}
+            {page ? "Back to latest" : "Share a photo"}
           </Link>
           {!page && (
             <Link className="text-button" href="/discover">

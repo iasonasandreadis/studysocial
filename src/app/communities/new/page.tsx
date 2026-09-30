@@ -14,7 +14,7 @@ export default async function NewCommunity() {
     <ProfileShell>
       <section className="onboarding-card">
         <p className="eyebrow">STUDY BETTER TOGETHER</p>
-        <h1>Start a community.</h1>
+        <h1>New club</h1>
         <CommunityForm id={randomUUID()} schools={data ?? []} />
       </section>
     </ProfileShell>

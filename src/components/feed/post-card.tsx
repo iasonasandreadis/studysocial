@@ -1,3 +1,5 @@
+import { Icon } from "@/components/ui/icon";
+import { ShareButton } from "@/components/posts/share-button";
 import Link from "next/link";
 import Image from "next/image";
 import { Kudos } from "./interactions";
@@ -22,7 +24,6 @@ export function PostCard({ post }: { post: FeedPost }) {
             >
               {relativeTime(post.created_at)}
             </time>{" "}
-            · {post.reason}
           </p>
         </div>
       </header>
@@ -57,9 +58,14 @@ export function PostCard({ post }: { post: FeedPost }) {
         </div>
         <div className="feed-actions">
           <Kudos id={post.id} activity={post.activity} />
-          <Link className="text-button" href={`/posts/${post.id}#comments`}>
-            {post.activity.comment_count} comments
+          <Link
+            className="icon-button"
+            aria-label={`${post.activity.comment_count} comments`}
+            href={`/posts/${post.id}#comments`}
+          >
+            <Icon name="comment" /> {post.activity.comment_count}
           </Link>
+          <ShareButton path={`/posts/${post.id}`} />
         </div>
       </div>
     </article>

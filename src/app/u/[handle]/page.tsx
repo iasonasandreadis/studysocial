@@ -1,3 +1,5 @@
+import { PhotoGrid } from "@/components/profile/photo-grid";
+import { pageNumber } from "@/lib/feed/validation";
 import Link from "next/link";
 import { randomUUID } from "node:crypto";
 import { BlockControl, ReportControl } from "@/components/safety/controls";
@@ -6,10 +8,13 @@ import { ProfileShell } from "@/components/profile/profile-shell";
 import { SocialControls } from "@/components/profile/social-controls";
 export default async function ProfilePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ handle: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const { handle } = await params;
+  const page = pageNumber((await searchParams).page);
   const { supabase, profile: p } = await loadProfile(handle);
   let avatar: string | null = null;
   if (p.can_view && p.avatar_path) {
@@ -32,10 +37,6 @@ export default async function ProfilePage({
   return (
     <ProfileShell>
       <section className="profile-card">
-        <div className="profile-cover">
-          <span>SMALL STEPS. SHARED ENERGY.</span>
-          <span aria-hidden="true">✳</span>
-        </div>
         <div className="profile-content">
           <div className="profile-heading">
             <div className="profile-avatar">
@@ -99,73 +100,55 @@ export default async function ProfilePage({
                   <strong>{p.following}</strong> Following
                 </Link>
               </div>
-              <p className="field-hint">
-                Counts include connections you’re allowed to see.
-              </p>
-              <div className="profile-details">
-                {p.academic_year && (
-                  <div>
-                    <span>Academic year</span>
-                    <p>{p.academic_year}</p>
-                  </div>
+              <details className="profile-about">
+                <summary>About</summary>
+                <div className="profile-details">
+                  {p.academic_year && (
+                    <div>
+                      <span>Academic year</span>
+                      <p>{p.academic_year}</p>
+                    </div>
+                  )}
+                  {p.academic_direction && (
+                    <div>
+                      <span>Study direction</span>
+                      <p>{p.academic_direction}</p>
+                    </div>
+                  )}
+                  {(p.target_university || p.target_program) && (
+                    <div>
+                      <span>Working toward</span>
+                      <p>
+                        {[p.target_program, p.target_university]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    </div>
+                  )}
+                  {p.goal_text && (
+                    <div>
+                      <span>A personal goal</span>
+                      <p>{p.goal_text}</p>
+                    </div>
+                  )}
+                </div>
+                {!!p.subjects?.length && (
+                  <section className="profile-subjects">
+                    <h2>Subjects</h2>
+                    <div>
+                      {p.subjects.map((s, i) => (
+                        <span key={i}>{s.en ?? Object.values(s)[0]}</span>
+                      ))}
+                    </div>
+                  </section>
                 )}
-                {p.academic_direction && (
-                  <div>
-                    <span>Study direction</span>
-                    <p>{p.academic_direction}</p>
-                  </div>
-                )}
-                {(p.target_university || p.target_program) && (
-                  <div>
-                    <span>Working toward</span>
-                    <p>
-                      {[p.target_program, p.target_university]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </p>
-                  </div>
-                )}
-                {p.goal_text && (
-                  <div>
-                    <span>A personal goal</span>
-                    <p>{p.goal_text}</p>
-                  </div>
-                )}
-              </div>
-              {!!p.subjects?.length && (
-                <section className="profile-subjects">
-                  <h2>Subjects</h2>
-                  <div>
-                    {p.subjects.map((s, i) => (
-                      <span key={i}>{s.en ?? Object.values(s)[0]}</span>
-                    ))}
-                  </div>
-                </section>
-              )}
-              {p.is_self && (
-                <Link className="text-button" href="/progress">
-                  Your private study progress →
-                </Link>
-              )}
-              <section className="profile-empty">
-                <h2>
-                  {p.is_self ? "Your study journey" : "One chapter at a time."}
-                </h2>
-                {p.is_self && p.study_sessions ? (
-                  <p>
-                    {Math.floor((p.study_seconds ?? 0) / 3600)}h{" "}
-                    {Math.floor(((p.study_seconds ?? 0) % 3600) / 60)}m across{" "}
-                    {p.study_sessions} completed sessions. Only you can see this
-                    total.
-                  </p>
-                ) : (
-                  <p>
-                    {p.is_self
-                      ? "No completed sessions yet. Start with one study moment whenever you’re ready."
-                      : "Study-time totals are private. Shared posts are available through their direct links."}
-                  </p>
-                )}
-              </section>
+              </details>
+              <PhotoGrid
+                authorId={p.id}
+                own={p.is_self}
+                page={page}
+                handle={p.handle}
+              />
             </>
           )}
         </div>

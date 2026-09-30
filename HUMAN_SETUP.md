@@ -9,6 +9,15 @@ under its default Standard Protection. Restricting all URLs awaits explicit user
 approval after auto-review rejected that access-control change. No paid upgrade
 was made. See docs/PROGRESS.md for deployment checks.
 
+## Home Screen app refresh
+The app now includes a standalone web manifest, iPhone icon, safe-area layouts,
+persistent icon navigation, native sharing and an offline notice. To refresh an
+older Home Screen shortcut, open the site in Safari, then Share > Add to Home Screen.
+Enable “Open as Web App” if offered. Remove the old shortcut if it still opens as a
+browser bookmark. You may need to sign in again in the newly installed app.
+An internet connection is required for posts and account actions; private content
+is never saved in the service worker cache. No notification permission is requested.
+
 ## What needs your input now
 - **Google:** Google Cloud account `iasonasandreadis@gmail.com` currently needs
   acceptance of its Terms of Service. Approval was requested; not accepted by the agent.
