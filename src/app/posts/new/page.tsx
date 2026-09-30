@@ -87,11 +87,10 @@ export default async function NewPost({
   return (
     <ProfileShell>
       <section className="onboarding-card">
-        <p className="eyebrow">CAPTURE YOUR PROGRESS</p>
-        <h1>Small steps. Worth sharing.</h1>
+        <p className="eyebrow">YOUR MOMENT</p>
+        <h1>Post a moment.</h1>
         <p className="account-description">
-          A page of notes, a finished chapter, a quiet study corner. Share a
-          moment on your terms.
+          Desk selfies, study breaks, memes. Whatever made your day.
         </p>
         <Composer
           id={randomUUID()}

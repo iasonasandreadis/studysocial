@@ -11,17 +11,18 @@ export function AccountShell({
   return (
     <main id="main" className="container account-shell">
       <aside className="account-story">
-        <p className="eyebrow">YOUR NEXT CHAPTER</p>
-        <h1>
-          A little focus.
-          <br />A little
+        <p className="eyebrow">YOUR PEOPLE. YOUR PLACE.</p>
+        <h2>
+          Study days.
           <br />
-          <span>togetherness.</span>
-        </h1>
+          Good
+          <br />
+          <span>company.</span>
+        </h2>
         <p>
-          You bring the ambition.
+          Come as you are.
           <br />
-          Let’s make room for the journey.
+          The study selfies and the study breaks.
         </p>
         <span className="account-spark" aria-hidden="true">
           ✳
@@ -29,7 +30,7 @@ export function AccountShell({
       </aside>
       <section className="account-card" aria-labelledby="account-title">
         <p className="eyebrow">WELCOME TO STUDYSOCIAL</p>
-        <h2 id="account-title">{title}</h2>
+        <h1 id="account-title">{title}</h1>
         <p className="account-description">{description}</p>
         {children}
       </section>

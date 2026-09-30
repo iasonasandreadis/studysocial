@@ -1,18 +1,32 @@
 # Human setup checklist
 
-## Latest status
-Supabase is now connected and all twelve migrations are applied. You do not need
-to create another project. Hosted schema checks pass. Auth redirects and 12-character
-password minimum are saved. Custom email templates require a custom SMTP provider;
-no paid upgrade was made. Live sign-up/upload testing and deployment remain.
-The older setup checklist below is retained as a reference.
+## Latest status — 2026-09-30
+Supabase is connected; all twelve migrations and hosted schema checks passed.
+The Vercel project is `jasontest1/studysocial`, using Node 24 and HTTPS origin
+`https://studysocial-iota.vercel.app`. This is an owner preview, not tester approval.
+Vercel authentication remains enabled; sign into your Vercel account on your phone
+when prompted. No paid upgrade was made. See docs/PROGRESS.md for deployment checks.
 
-## Start here
-Local implementation and deployment preparation have reached the final supplied
-phase (12). The pack contains thirteen phases numbered 00–12; there is no separate
-Phase 13 prompt. **Your next required action is the dedicated Supabase account
-setup below.** The agent can continue migration and live testing once configured.
-No new coding tools need installing. Do not invite testers yet; see the audit.
+## What needs your input now
+- **Google:** Google Cloud account `iasonasandreadis@gmail.com` currently needs
+  acceptance of its Terms of Service. Approval was requested; not accepted by the agent.
+  Then create the dedicated OAuth project/consent configuration and Web client.
+  Supabase callback: `https://onphcogvgisjgmlukqhv.supabase.co/auth/v1/callback`.
+  Save the Google client ID and secret in Supabase Auth > Google, not app source.
+- **Apple:** confirm whether you have an Apple Developer membership. Web sign-in
+  needs a Services ID, signing key and server secret; Supabase documents six-month
+  secret rotation. Apple is offered first when enabled.
+- Neither provider is currently enabled. The app checks live provider availability
+  and retains email as the fallback. OAuth code is implemented, not end-to-end tested.
+- Email templates/delivery still need custom SMTP. Supabase's free default mail
+  service refused custom templates. Do not pay for an upgrade without a decision.
+- Vercel CLI deployment works. Automatic GitHub deploys need a Vercel GitHub login
+  connection; the CLI could not link the repository. Git push remains independent.
+
+## Before inviting testers
+Finish trusted upload processing and the live two-account flows in docs/AUDIT.md.
+Provide real support/report handling. The supplied pack ends at 12 (thirteen phases
+numbered 00–12). No extra “Phase 13” requirements were supplied.
 
 ## Completed locally
 - [x] Node.js 24 is installed (verified v24.16.0).

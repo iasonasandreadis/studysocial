@@ -61,6 +61,10 @@ export function Composer({
       action={action}
       className="account-form post-composer"
       onReset={(e) => e.preventDefault()}
+      onInvalidCapture={(e) => {
+        const details = (e.target as HTMLElement).closest("details");
+        if (details) details.open = true;
+      }}
       onSubmit={(e) => {
         if (!preview) e.preventDefault();
       }}
@@ -83,7 +87,7 @@ export function Composer({
       <fieldset disabled={pending}>
         <div hidden={preview}>
           <label>
-            Study photo
+            Photo
             <input
               type="file"
               name="image"
@@ -122,115 +126,123 @@ export function Composer({
             <textarea
               name="caption"
               maxLength={2200}
-              rows={4}
-              placeholder="What did you work on today?"
+              rows={3}
+              placeholder="A study selfie, a meme, a little win…"
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
             />
           </label>
-          <label>
-            Image description <span className="optional">(optional)</span>
-            <input
-              name="alt_text"
-              maxLength={300}
-              value={alt}
-              onChange={(e) => setAlt(e.target.value)}
-              placeholder="Describe the photo for people using screen readers"
-            />
-          </label>
-          <label>
-            Subject <span className="optional">(optional)</span>
-            <select
-              name="subject_id"
-              disabled={Boolean(session)}
-              value={
-                session
-                  ? (sessions.find((s) => s.id === session)?.subject_id ?? "")
-                  : subject
-              }
-              onChange={(e) => setSubject(e.target.value)}
-            >
-              <option value="">No subject</option>
-              {subjects.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.labels.en ?? s.labels.el ?? "Subject"}
-                </option>
-              ))}
-            </select>
-          </label>
-          {sessions.length > 0 ? (
+          <details
+            className="optional-details"
+            open={initialSession ? true : undefined}
+          >
+            <summary>Add study details or an image description</summary>
             <label>
-              Completed session <span className="optional">(optional)</span>
+              Image description <span className="optional">(optional)</span>
+              <input
+                name="alt_text"
+                maxLength={300}
+                value={alt}
+                onChange={(e) => setAlt(e.target.value)}
+                placeholder="Describe the photo for people using screen readers"
+              />
+            </label>
+            <label>
+              Subject <span className="optional">(optional)</span>
               <select
-                name="session_id"
-                value={session}
-                onChange={(e) => {
-                  setSession(e.target.value);
-                  const linked = sessions.find((s) => s.id === e.target.value);
-                  if (linked) setSubject(linked.subject_id ?? "");
-                }}
+                name="subject_id"
+                disabled={Boolean(session)}
+                value={
+                  session
+                    ? (sessions.find((s) => s.id === session)?.subject_id ?? "")
+                    : subject
+                }
+                onChange={(e) => setSubject(e.target.value)}
               >
-                <option value="">No linked session</option>
-                {sessions.map((s) => (
+                <option value="">No subject</option>
+                {subjects.map((s) => (
                   <option key={s.id} value={s.id}>
-                    {new Date(s.ended_at).toLocaleDateString("en-GB", {
-                      timeZone: "UTC",
-                    })}{" "}
-                    · {durationLabel(s.duration_seconds)}
+                    {s.labels.en ?? s.labels.el ?? "Subject"}
                   </option>
                 ))}
               </select>
-              <span className="field-hint">
-                Your most recent 100 completed sessions (dates in UTC). A
-                session can be linked to one post. Personal session notes are
-                never shared.
-              </span>
             </label>
-          ) : (
-            <p className="field-hint">
-              No completed sessions to link. You can still share a photo and
-              optionally enter a duration.
-            </p>
-          )}
-          <label className="check-option">
-            <input
-              type="checkbox"
-              name="show_duration"
-              checked={show}
-              onChange={(e) => setShow(e.target.checked)}
-            />{" "}
-            Show study duration on this post
-          </label>
-          {show && !session && (
-            <label>
-              Duration in whole minutes
+            {sessions.length > 0 ? (
+              <label>
+                Completed session <span className="optional">(optional)</span>
+                <select
+                  name="session_id"
+                  value={session}
+                  onChange={(e) => {
+                    setSession(e.target.value);
+                    const linked = sessions.find(
+                      (s) => s.id === e.target.value,
+                    );
+                    if (linked) setSubject(linked.subject_id ?? "");
+                  }}
+                >
+                  <option value="">No linked session</option>
+                  {sessions.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {new Date(s.ended_at).toLocaleDateString("en-GB", {
+                        timeZone: "UTC",
+                      })}{" "}
+                      · {durationLabel(s.duration_seconds)}
+                    </option>
+                  ))}
+                </select>
+                <span className="field-hint">
+                  Your most recent 100 completed sessions (dates in UTC). A
+                  session can be linked to one post. Personal session notes are
+                  never shared.
+                </span>
+              </label>
+            ) : (
+              <p className="field-hint">
+                No completed sessions to link. You can still share a photo and
+                optionally enter a duration.
+              </p>
+            )}
+            <label className="check-option">
               <input
-                name="duration_minutes"
-                value={minutes}
-                onChange={(e) => setMinutes(e.target.value)}
-                type="number"
-                min={1}
-                max={1440}
-                required
-              />
+                type="checkbox"
+                name="show_duration"
+                checked={show}
+                onChange={(e) => setShow(e.target.checked)}
+              />{" "}
+              Show study duration on this post
             </label>
-          )}
-          {show && session && (
-            <p className="field-hint">
-              Shared duration:{" "}
-              {durationLabel(
-                sessions.find((s) => s.id === session)!.duration_seconds,
-              )}
-            </p>
-          )}
+            {show && !session && (
+              <label>
+                Duration in whole minutes
+                <input
+                  name="duration_minutes"
+                  value={minutes}
+                  onChange={(e) => setMinutes(e.target.value)}
+                  type="number"
+                  min={1}
+                  max={1440}
+                  required
+                />
+              </label>
+            )}
+            {show && session && (
+              <p className="field-hint">
+                Shared duration:{" "}
+                {durationLabel(
+                  sessions.find((s) => s.id === session)!.duration_seconds,
+                )}
+              </p>
+            )}
+          </details>
           <label>
-            Community <span className="optional">(optional)</span>
+            Club <span className="optional">(optional)</span>
             <select
               name="community_id"
               value={community}
               onChange={(e) => setCommunity(e.target.value)}
             >
-              <option value="">No community</option>
+              <option value="">No club</option>
               {communities.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -271,7 +283,7 @@ export function Composer({
                 return;
               }
               if (!file) {
-                setError("Choose your study photo first.");
+                setError("Choose a photo first.");
                 return;
               }
               setError("");
@@ -284,7 +296,7 @@ export function Composer({
         {preview && (
           <section aria-label="Post preview">
             <h2 ref={heading} tabIndex={-1}>
-              A moment of progress.
+              Ready to share?
             </h2>
             <p className="post-visibility">
               Visible to: {audienceText}

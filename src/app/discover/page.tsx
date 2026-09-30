@@ -94,22 +94,47 @@ export default async function Discover({
     <ProfileShell>
       <header className="feed-heading">
         <p className="eyebrow">FIND YOUR PEOPLE</p>
-        <h1>A shared direction.</h1>
+        <h1>Find your people.</h1>
         <p>Connect through the interests people choose to share.</p>
       </header>
       <form className="account-form discover-search" action="/discover">
         <label>
-          Search students, subjects, schools, communities or shared goals
+          Search people & clubs
           <input
             type="search"
             name="q"
             defaultValue={q}
             maxLength={80}
-            placeholder="A username, subject or university…"
+            placeholder="A username, club or subject…"
           />
         </label>
         <button className="button">Search</button>
       </form>
+      <section className="onboarding-card discover-section">
+        <h2>Clubs</h2>
+        <Link className="text-button" href="/communities/new">
+          Start a club
+        </Link>
+        {communities.data?.length ? (
+          <ul className="connection-list">
+            {communities.data.map((c) => (
+              <li key={c.id}>
+                <Link href={`/communities/${c.id}`}>
+                  <strong>{c.name}</strong>
+                  <span>
+                    {c.kind} · {c.visibility}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="field-hint">
+            No clubs here yet. Start one for your school, a subject, or your
+            study friends.
+          </p>
+        )}
+      </section>
       <section className="onboarding-card">
         <h2>{q ? "Student matches" : "Students"}</h2>
         <Students rows={students} />
@@ -132,42 +157,20 @@ export default async function Discover({
       </section>
       {!q && (
         <div className="discover-grid">
-          {sections.map(([key, title], i) => (
-            <section className="onboarding-card" key={key}>
-              <h2>{title}</h2>
-              <Students
-                rows={((matches[i].data ?? []) as Student[]).slice(0, 6)}
-              />
-            </section>
-          ))}
+          {sections.map(([key, title], i) =>
+            matches[i].data?.length ? (
+              <section className="onboarding-card" key={key}>
+                <h2>{title}</h2>
+                <Students
+                  rows={((matches[i].data ?? []) as Student[]).slice(0, 6)}
+                />
+              </section>
+            ) : null,
+          )}
         </div>
       )}
       <section className="onboarding-card discover-section">
-        <h2>Communities</h2>
-        <Link className="text-button" href="/communities/new">
-          Create a student community
-        </Link>
-        {communities.data?.length ? (
-          <ul className="connection-list">
-            {communities.data.map((c) => (
-              <li key={c.id}>
-                <Link href={`/communities/${c.id}`}>
-                  <strong>{c.name}</strong>
-                  <span>
-                    {c.kind} · {c.visibility}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="field-hint">
-            No communities match. Start one for your study circle.
-          </p>
-        )}
-      </section>
-      <section className="onboarding-card discover-section">
-        <h2>Popular in your communities</h2>
+        <h2>From your clubs</h2>
         {popular.data?.length ? (
           <ul className="connection-list">
             {popular.data.map(

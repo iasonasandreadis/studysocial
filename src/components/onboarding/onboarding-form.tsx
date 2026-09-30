@@ -100,104 +100,110 @@ export function OnboardingForm({
                 placeholder="e.g. Final year of high school"
               />
             </label>
-            <label>
-              Exam or education program
-              <select
-                name="program_id"
-                defaultValue={settings.program_id ?? ""}
-              >
-                <option value="">Not listed / decide later</option>
-                {programs.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.labels.en ?? Object.values(p.labels)[0]}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Academic direction
-              <input
-                name="academic_direction"
-                maxLength={100}
-                defaultValue={settings.academic_direction}
-                placeholder="e.g. Humanities, sciences, or your own path"
-              />
-            </label>
-            <fieldset className="subject-options">
-              <legend>Subjects you’re studying</legend>
-              {subjects.length ? (
-                subjects.map((s) => (
-                  <label className="check-option" key={s.id}>
-                    <input
-                      type="checkbox"
-                      name="subjects"
-                      value={s.id}
-                      defaultChecked={selectedSubjects.includes(s.id)}
-                    />
-                    {s.labels.en ?? Object.values(s.labels)[0]}
-                  </label>
-                ))
-              ) : (
-                <p className="field-hint">
-                  No subjects are listed yet. You can continue and choose them
-                  later.
-                </p>
-              )}
-            </fieldset>
-            <div className="form-grid">
+            <details className="optional-details">
+              <summary>More about your studies (optional)</summary>
               <label>
-                Target university
+                Exam or education program
+                <select
+                  name="program_id"
+                  defaultValue={settings.program_id ?? ""}
+                >
+                  <option value="">Not listed / decide later</option>
+                  {programs.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.labels.en ?? Object.values(p.labels)[0]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Academic direction
                 <input
-                  name="target_university"
-                  maxLength={160}
-                  defaultValue={settings.target_university}
-                  placeholder="Still exploring is okay"
+                  name="academic_direction"
+                  maxLength={100}
+                  defaultValue={settings.academic_direction}
+                  placeholder="e.g. Humanities, sciences, or your own path"
+                />
+              </label>
+              <fieldset className="subject-options">
+                <legend>Subjects you’re studying</legend>
+                {subjects.length ? (
+                  subjects.map((s) => (
+                    <label className="check-option" key={s.id}>
+                      <input
+                        type="checkbox"
+                        name="subjects"
+                        value={s.id}
+                        defaultChecked={selectedSubjects.includes(s.id)}
+                      />
+                      {s.labels.en ?? Object.values(s.labels)[0]}
+                    </label>
+                  ))
+                ) : (
+                  <p className="field-hint">
+                    No subjects are listed yet. You can continue and choose them
+                    later.
+                  </p>
+                )}
+              </fieldset>
+              <div className="form-grid">
+                <label>
+                  Target university
+                  <input
+                    name="target_university"
+                    maxLength={160}
+                    defaultValue={settings.target_university}
+                    placeholder="Still exploring is okay"
+                  />
+                </label>
+                <label>
+                  Target degree or program
+                  <input
+                    name="target_program"
+                    maxLength={160}
+                    defaultValue={settings.target_program}
+                    placeholder="e.g. Engineering"
+                  />
+                </label>
+              </div>
+              <label>
+                A goal for this chapter
+                <textarea
+                  name="goal_text"
+                  maxLength={300}
+                  rows={2}
+                  defaultValue={settings.goal_text}
+                  placeholder="e.g. Make a little time for maths each day"
                 />
               </label>
               <label>
-                Target degree or program
-                <input
-                  name="target_program"
-                  maxLength={160}
-                  defaultValue={settings.target_program}
-                  placeholder="e.g. Engineering"
-                />
+                School
+                <select
+                  name="school_id"
+                  defaultValue={settings.school_id ?? ""}
+                >
+                  <option value="">Prefer not to say / enter below</option>
+                  {schools.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name} ({s.country_code})
+                    </option>
+                  ))}
+                </select>
               </label>
-            </div>
-            <label>
-              A goal for this chapter
-              <textarea
-                name="goal_text"
-                maxLength={300}
-                rows={2}
-                defaultValue={settings.goal_text}
-                placeholder="e.g. Make a little time for maths each day"
-              />
-            </label>
-            <label>
-              School
-              <select name="school_id" defaultValue={settings.school_id ?? ""}>
-                <option value="">Prefer not to say / enter below</option>
-                {schools.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name} ({s.country_code})
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              School name, if not listed
-              <input
-                name="school_name"
-                maxLength={160}
-                defaultValue={settings.school_name}
-                placeholder="Optional — kept private"
-              />
-              <span className="field-hint">
-                Choose a school above or enter one here. You can also leave both
-                blank.
-              </span>
-            </label>
+              <label>
+                School name, if not listed
+                <input
+                  name="school_name"
+                  maxLength={160}
+                  defaultValue={settings.school_name}
+                  placeholder="Optional — kept private"
+                />
+                <span className="field-hint">
+                  Choose a school above or enter one here. You can also leave
+                  both blank.
+                </span>
+              </label>
+            </details>
           </>
         )}
         {step === 3 && (

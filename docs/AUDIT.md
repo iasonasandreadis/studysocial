@@ -1,6 +1,13 @@
 # Phase 11 audit — 2026-09-29
 
-## Result
+## Current follow-up — 2026-09-30
+Supabase is now linked, all migrations applied, and hosted schema lint passes.
+Mobile landing/sign-up visuals were checked in Chrome at 390px. Existing local
+connection failures were resolved by starting the development server; browser
+access now works. Authenticated two-account and upload acceptance remain pending.
+The release blockers below still apply; configuration is no longer the blocker.
+
+## Historical Phase 11 result
 Local review and regression checks pass. This is not live integration approval or
 permission to invite testers. Supabase Auth/Storage and authenticated browser checks
 remain blocked by missing project configuration. No cloud data was changed.

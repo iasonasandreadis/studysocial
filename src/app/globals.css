@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8f9f5;
+  --background: #faf8ff;
   --surface: #fff;
-  --ink: #202d28;
-  --muted: #616e66;
-  --accent: #335e44;
-  --line: #dbe0d6;
-  --soft: #eef1e9;
+  --ink: #211b33;
+  --muted: #696278;
+  --accent: #6741d9;
+  --line: #e4deee;
+  --soft: #f0eaff;
   color-scheme: light;
 }
 @theme inline {
@@ -47,8 +47,8 @@ button:focus-visible {
   outline-offset: 6px;
 }
 ::selection {
-  background: #d0e4af;
-  color: #203427;
+  background: #dbcaff;
+  color: #211b33;
 }
 .container {
   width: min(1184px, calc(100% - 80px));
@@ -96,7 +96,7 @@ button:focus-visible {
   letter-spacing: -4px;
 }
 .brand-mark span {
-  color: #d4ed98;
+  color: #ffd2b9;
 }
 .site-header nav {
   display: flex;
@@ -541,23 +541,23 @@ h2 span {
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #17211c;
-    --surface: #1e2a23;
-    --ink: #f0f3e9;
-    --muted: #b0bcaf;
-    --accent: #c0d89c;
-    --line: #364439;
-    --soft: #243128;
+    --background: #171320;
+    --surface: #211c2c;
+    --ink: #f6f0ff;
+    --muted: #c2b8d2;
+    --accent: #c5aeff;
+    --line: #42374f;
+    --soft: #2c243b;
     color-scheme: dark;
   }
   .study-art {
     background: #ced7bf;
   }
   .brand-mark {
-    color: #203427;
+    color: #211b33;
   }
   .brand-mark span {
-    color: #203427;
+    color: #211b33;
   }
 }
 @media (max-width: 1000px) {
@@ -755,7 +755,7 @@ h2 span {
   align-items: center;
   min-height: 75vh;
 }
-.account-story h1 {
+.account-story h2 {
   font-size: clamp(42px, 4.6vw, 64px);
 }
 .account-story > p:last-of-type {
@@ -781,7 +781,7 @@ h2 span {
   font-size: 9px;
   margin-bottom: 20px;
 }
-.account-card h2 {
+.account-card h1 {
   font-size: 32px;
 }
 .account-description {
@@ -1094,7 +1094,7 @@ h2 span {
   .account-shell {
     gap: 30px;
   }
-  .account-story h1 {
+  .account-story h2 {
     font-size: 40px;
   }
   .account-card {
@@ -1114,7 +1114,7 @@ h2 span {
   .onboarding-card {
     padding: 25px 20px;
   }
-  .account-card h2,
+  .account-card h1,
   .onboarding-card h1 {
     font-size: 29px;
   }
@@ -1997,5 +1997,227 @@ button:disabled {
   .daily-activity li {
     grid-template-columns: 45px 1fr 85px;
     gap: 8px;
+  }
+}
+
+/* Photo-first student life refresh. */
+.social-landing {
+  max-width: 1020px;
+}
+.social-hero {
+  text-align: center;
+  padding: 58px 0 44px;
+}
+.social-hero .eyebrow {
+  justify-content: center;
+}
+.social-hero h1 {
+  font-size: clamp(40px, 6vw, 76px);
+  font-weight: 800;
+  letter-spacing: -0.065em;
+  line-height: 1.06;
+}
+.social-intro {
+  max-width: 490px;
+  margin: 0 auto 26px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.6;
+}
+.landing-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.button {
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.site-header nav .nav-pill {
+  background: var(--accent);
+  color: var(--background);
+  border: 0;
+}
+.moment-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  padding: 12px 0 30px;
+}
+.moment-tile {
+  padding: 28px;
+  border-radius: 28px;
+  aspect-ratio: 1;
+  color: #211b33;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.moment-tile > span {
+  font-size: 56px;
+  line-height: 1;
+}
+.moment-tile p {
+  font-size: clamp(22px, 3vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -1px;
+  font-weight: 750;
+  margin: 22px 0;
+}
+.moment-tile small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.lilac {
+  background: #ded0ff;
+  transform: rotate(-3deg);
+}
+.peach {
+  background: #ffd4bd;
+  transform: rotate(2deg);
+}
+.blue {
+  background: #cadfff;
+  transform: rotate(-2deg);
+}
+.landing-bottom {
+  text-align: center;
+  max-width: 520px;
+  margin: 50px auto 70px;
+}
+.landing-bottom h2 {
+  font-size: 32px;
+  letter-spacing: -1px;
+}
+.landing-bottom p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+.optional-details {
+  margin: 18px 0;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.optional-details summary {
+  cursor: pointer;
+  padding: 17px 0;
+  font-weight: 600;
+}
+.optional-details[open] {
+  padding-bottom: 16px;
+}
+.provider-buttons {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.provider-buttons button {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 14px;
+  font-weight: 600;
+}
+.provider-buttons button:disabled {
+  opacity: 0.6;
+}
+.provider-buttons .apple-signin {
+  background: #111;
+  color: white;
+  border-color: #111;
+}
+.feed-heading h1 {
+  font-weight: 750;
+}
+.post-composer input[type="file"] {
+  padding: 24px 14px;
+  border: 2px dashed var(--line);
+  background: var(--soft);
+  border-radius: 16px;
+}
+.post-composer textarea {
+  min-height: 90px;
+}
+.post-composer > fieldset > div > label {
+  margin-bottom: 20px;
+}
+.feed-empty .text-button {
+  display: block;
+  margin-top: 18px;
+}
+@media (max-width: 700px) {
+  .site-header {
+    height: 76px;
+  }
+  .site-header nav > a:first-child {
+    display: block;
+  }
+  .site-header nav {
+    gap: 10px;
+  }
+  .social-hero {
+    padding-top: 28px;
+  }
+  .social-intro {
+    font-size: 16px;
+  }
+  .landing-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .landing-actions .button {
+    width: 100%;
+  }
+  .moment-board {
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .moment-tile {
+    padding: 20px;
+    aspect-ratio: auto;
+    min-height: 210px;
+  }
+  .moment-tile:last-child {
+    grid-column: 1 / -1;
+    min-height: 150px;
+    transform: rotate(-1deg);
+  }
+  .moment-tile:last-child > span {
+    display: none;
+  }
+  .moment-tile:last-child p br {
+    display: none;
+  }
+  .moment-tile small {
+    font-size: 8px;
+  }
+  .account-story {
+    display: none;
+  }
+  .account-shell {
+    padding-top: 20px;
+    min-height: auto;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  .profile-shell {
+    padding-top: 8px;
+  }
+  .feed-heading .eyebrow {
+    display: none;
+  }
+  .feed-heading h1 {
+    font-size: 34px;
+    letter-spacing: -1.3px;
   }
 }

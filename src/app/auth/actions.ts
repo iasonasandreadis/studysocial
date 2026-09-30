@@ -1,4 +1,6 @@
 "use server";
+import { isSocialProvider } from "@/lib/auth/providers";
+import { availableProviders } from "@/lib/auth/provider-settings";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
@@ -107,4 +109,38 @@ export async function logout(): Promise<ActionState> {
   }
   revalidatePath("/", "layout");
   redirect("/login");
+}
+
+/** Providers and redirect targets are selected by the server, never the form. */
+export async function socialSignIn(
+  _previous: ActionState,
+  form: FormData,
+): Promise<ActionState> {
+  const provider = form.get("provider");
+  if (
+    !isSocialProvider(provider) ||
+    !(await availableProviders()).includes(provider)
+  )
+    return {
+      error:
+        "This sign-in option is not available yet. Please use email for now.",
+    };
+  let destination: string;
+  try {
+    const supabase = await createClient();
+    const origin = siteOrigin(process.env.NEXT_PUBLIC_SITE_URL);
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${origin}/auth/confirm`,
+        skipBrowserRedirect: true,
+      },
+    });
+    if (error || !data.url)
+      return { error: "Couldn’t start sign-in. Please try again." };
+    destination = data.url;
+  } catch {
+    return { error: "Couldn’t reach the sign-in service. Please try again." };
+  }
+  redirect(destination);
 }

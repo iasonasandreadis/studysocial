@@ -49,3 +49,28 @@ Next: finish trusted upload processing, live auth/storage tests, GitHub backup, 
 Vercel test deployment. No Vercel deployment yet. Use current CLI commands rather
 than asking for passwords. Full local checks last passed 81 tests before this auth
 configuration-only change; hosted schema checks now also pass.
+
+## Product refresh and hosting — 2026-09-30
+- Replaced obsolete coming-soon landing with prominent signup and student-life copy.
+- Purple/lilac theme with peach/blue accents; light/dark support retained. Phone
+  landing and signup inspected at 390×844; no fake users, photos or engagement added.
+- Composer keeps photo/caption/audience visible; optional study details collapse.
+  Onboarding optional academic details collapse without deleting saved values.
+- Clubs moved near the top of discovery, empty recommendation sections suppressed;
+  header/feed provide club discovery links. Existing communities are the clubs;
+  there is no chat or DM feature.
+- Apple/Google OAuth server action uses a strict provider allowlist and fixed
+  callback. Buttons follow live Supabase provider settings, Apple first. Both
+  providers are disabled on the project. Two added provider regression tests pass.
+- User's existing failed-email tab reported `otp_expired`. Improved recovery copy
+  explains newest-link/same-browser use and password sign-in if already confirmed.
+  This is not a claim that email delivery or confirmation is fixed/tested.
+- 83 tests, typecheck, lint and Webpack build passed. Vercel Turbopack build also
+  passed. Final minor discovery/semantic changes rechecked with typecheck/lint.
+- Vercel project created and public app env configured; HTTPS Supabase callbacks
+  set. First deployment ready, owner protection enabled; configured redeploy pending.
+- Google Cloud terms awaiting user approval; no legal terms accepted. An earlier
+  stale UI click was rejected before Cloud Shell could open; shell not activated.
+- Next: configure Google after terms approval, Apple after membership confirmation,
+  custom email delivery, upload hardening, authenticated live checks. Do not invite
+  external testers based on the successful build alone.

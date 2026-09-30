@@ -35,8 +35,8 @@ export default async function Feed({
     <ProfileShell>
       <header className="feed-heading">
         <p className="eyebrow">A LITTLE PROGRESS, TOGETHER</p>
-        <h1>Your study circle.</h1>
-        <p>Real moments from people putting in the work.</p>
+        <h1>Your people. Your day.</h1>
+        <p>Study selfies, little wins, and everything in between.</p>
       </header>
       <nav className="feed-tabs" aria-label="Feed mode">
         <Link
@@ -49,7 +49,7 @@ export default async function Feed({
           href="/feed?mode=community"
           aria-current={mode === "community" ? "page" : undefined}
         >
-          Community
+          Following & clubs
         </Link>
       </nav>
       <details className="feed-explanation">
@@ -82,14 +82,14 @@ export default async function Feed({
               ? "You’ve reached the end."
               : mode === "community"
                 ? "Your circle starts with a connection."
-                : "A fresh page for your study story."}
+                : "Your feed starts with you."}
           </h2>
           <p>
             {page
               ? "Return to the first page for the latest study moments."
               : mode === "community"
                 ? "Follow someone from their profile to see their shared study moments here."
-                : "There are no accessible study moments here yet. Share a photo when you’re ready."}
+                : "No posts to show yet. Share your first photo, or find friends and clubs to fill your feed."}
           </p>
           <Link
             className="button"
@@ -97,6 +97,11 @@ export default async function Feed({
           >
             {page ? "Back to latest" : "Create a post"}
           </Link>
+          {!page && (
+            <Link className="text-button" href="/discover">
+              Find friends & clubs →
+            </Link>
+          )}
         </section>
       )}
       <nav className="pagination" aria-label="Feed pages">

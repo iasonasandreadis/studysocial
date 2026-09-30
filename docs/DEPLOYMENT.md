@@ -1,10 +1,22 @@
 # Phase 12 deployment preparation — 2026-09-29
 
-## Status
-Prepared locally, not deployed and not approved for external testers. There is no
-`.env.local`, linked Supabase project or linked Vercel project in this checkout.
-The only configured Git remote is `iasonasandreadis/studysocial`; implementation
-changes remain local and uncommitted. No connected Supabase/Vercel tool is available.
+## Current status — 2026-09-30
+Supabase is linked and initialized. Source is backed up on GitHub. Vercel project
+`jasontest1/studysocial` was created using the existing CLI login; no paid services.
+Canonical origin: `https://studysocial-iota.vercel.app`. Vercel assigned the first
+build to its production target, but deployment authentication remains enabled.
+This is an owner preview, not a public tester release. The first build intentionally
+had no app credentials; subsequent configured builds are recorded in PROGRESS.md.
+
+Three public app environment values are configured in Vercel production/preview.
+Supabase Site URL is the HTTPS origin and exact confirmation/recovery callbacks
+are allowed, preserving localhost callbacks. Local `.env.local` stays ignored.
+Google/Apple providers remain disabled pending external setup. Custom SMTP is pending.
+GitHub automatic deployment linking failed because Vercel needs a GitHub login
+connection. CLI deployments work independently; keep committing/pushing source.
+
+The checks below describe the historical Phase 12 checkpoint. Current release
+blockers in AUDIT.md still apply, especially trusted upload processing and live flows.
 
 ## Changes
 - Node engine narrowed to 24.x in package and lockfile, matching .nvmrc.
