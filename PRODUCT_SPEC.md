@@ -25,7 +25,7 @@ flows, protected account routes, three saved onboarding steps, and optional avat
 Phase 03 adds profiles, explicit academic-sharing choices and the follow graph.
 Phase 04 adds study photo posts, preview, protected direct viewing and retryable media
 deletion. Live auth/storage/social verification requires Supabase configuration.
-Phase 05 adds deterministic For You/Community feeds, kudos and flat comments.
+Phase 05 adds deterministic For You/Community feeds, likes and comments, extended with one-level replies in the September 30 refinement.
 Phase 06 adds the persistent private timer and session history.
 The user authorized sequential MVP work through Phase 13; complete each supplied
 phase and its checks before moving on. The supplied pack ends at 12 (thirteen phases numbered 00–12); a separate Phase 13 has no supplied scope.
@@ -45,7 +45,7 @@ phase and its checks before moving on. The supplied pack ends at 12 (thirteen ph
   linked completed session; preview the actual audience before publishing. Support
   own-post deletion and edits with clear loading/failure handling. Sharing is opt-in.
   Never automatically publish a completed session or expose personal notes.
-- **Interactions:** kudos with one per user/post and undo; comments with validated
+- **Interactions:** likes with one per user/post and undo; comments and one-level replies with validated
   length, author ownership, removal and reporting. Counts must reflect real data.
 - **Feed and discovery:** paginated authorized activity from followed users and joined
   communities, useful empty states, and discovery by allowed academic interests.

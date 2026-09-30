@@ -25,7 +25,7 @@ export default async function PostDetail({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ commentsPage?: string }>;
+  searchParams: Promise<{ commentsPage?: string; thread?: string }>;
 }) {
   const { id } = await params;
   const { supabase, user } = await requireOnboarded();
@@ -72,18 +72,35 @@ export default async function PostDetail({
     url = data?.signedUrl ?? null;
   }
   const own = post.author_id === user.id;
-  const commentsPage = pageNumber((await searchParams).commentsPage);
+  const query = await searchParams;
+  const commentsPage = pageNumber(query.commentsPage);
+  const threadId =
+    query.thread && uuidPattern.test(query.thread) ? query.thread : undefined;
+  let parent: PostComment | null = null;
   let activity: Activity | null = null,
     comments: PostComment[] = [];
   if (post.publication_state === "published") {
     const [a, c] = await Promise.all([
       supabase.rpc("post_activity", { target: id }),
-      supabase.rpc("post_comments", { target: id, page_number: commentsPage }),
+      threadId
+        ? supabase.rpc("comment_thread", {
+            target: id,
+            parent_id: threadId,
+            page_number: commentsPage,
+          })
+        : supabase.rpc("post_comments", {
+            target: id,
+            page_number: commentsPage,
+          }),
     ]);
     if (a.error || c.error) throw new Error("We couldn’t load the comments.");
     if (!a.data || c.data === null) notFound();
     activity = a.data as Activity;
-    comments = c.data as PostComment[];
+    if (threadId) {
+      const thread = c.data as { parent: PostComment; replies: PostComment[] };
+      parent = thread.parent;
+      comments = thread.replies;
+    } else comments = c.data as PostComment[];
   }
   return (
     <ProfileShell>
@@ -147,9 +164,25 @@ export default async function PostDetail({
             aria-labelledby="comments-title"
           >
             <Kudos id={id} activity={activity} />
-            <h2 id="comments-title">Comments · {activity.comment_count}</h2>
+            <h2 id="comments-title">
+              {parent ? "Replies" : `Comments · ${activity.comment_count}`}
+            </h2>
+            {parent && (
+              <div className="reply-parent">
+                <Link href={`/posts/${id}#comments`} className="text-button">
+                  ← All comments
+                </Link>
+                <p>
+                  <strong>
+                    {parent.display_name ||
+                      (parent.handle ? `@${parent.handle}` : "Student")}
+                  </strong>
+                </p>
+                <p>{parent.body}</p>
+              </div>
+            )}
 
-            <CommentForm postId={id} id={randomUUID()} />
+            <CommentForm postId={id} id={randomUUID()} parentId={threadId} />
             {comments.length ? (
               <ul className="comment-list">
                 {comments.slice(0, 20).map((c) => (
@@ -170,6 +203,14 @@ export default async function PostDetail({
                       </time>
                     </header>
                     <p>{c.body}</p>
+                    {!threadId && (
+                      <Link
+                        className="text-button"
+                        href={`/posts/${id}?thread=${c.id}#comments`}
+                      >
+                        Reply · View replies
+                      </Link>
+                    )}
                     {c.own && <DeleteComment postId={id} id={c.id} />}
                   </li>
                 ))}
@@ -178,22 +219,24 @@ export default async function PostDetail({
               <p className="form-notice">
                 {commentsPage
                   ? "No more comments on this page."
-                  : "No comments yet. A kind word can make someone’s day."}
+                  : threadId
+                    ? "No replies yet."
+                    : "Be the first to comment."}
               </p>
             )}
             <nav className="pagination" aria-label="Comment pages">
               {commentsPage > 0 && (
                 <Link
-                  href={`/posts/${id}?commentsPage=${commentsPage - 1}#comments`}
+                  href={`/posts/${id}?commentsPage=${commentsPage - 1}${threadId ? `&thread=${threadId}` : ""}#comments`}
                 >
-                  ← Newer
+                  ← Previous
                 </Link>
               )}
               {comments.length > 20 && (
                 <Link
-                  href={`/posts/${id}?commentsPage=${commentsPage + 1}#comments`}
+                  href={`/posts/${id}?commentsPage=${commentsPage + 1}${threadId ? `&thread=${threadId}` : ""}#comments`}
                 >
-                  Older →
+                  Next →
                 </Link>
               )}
             </nav>

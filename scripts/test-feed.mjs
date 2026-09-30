@@ -291,6 +291,76 @@ test("feeds, exact visible interactions and flat comments preserve database auth
     },
   );
   await t.test(
+    "replies enforce post and parent access, preserve privacy and make retries idempotent",
+    async () => {
+      await user(commenter, "select add_post_comment($1,$2,$3)", [
+        ownPost,
+        id(850),
+        "Parent",
+      ]);
+      const args = [ownPost, id(850), id(851), "Reply"];
+      await user(viewer, "select reply_to_comment($1,$2,$3,$4)", args);
+      await user(viewer, "select reply_to_comment($1,$2,$3,$4)", args);
+      const thread = async (who) =>
+        (
+          await user(who, "select comment_thread($1,$2) as value", [
+            ownPost,
+            id(850),
+          ])
+        )[0].value;
+      assert.equal((await thread(viewer)).replies.length, 1);
+      assert.equal((await thread(viewer)).parent.display_name, null);
+      assert.equal((await thread(viewer)).replies[0].body, "Reply");
+      await denied(null, "select reply_to_comment($1,$2,$3,$4)", args);
+      await denied(null, "select comment_thread($1,$2)", [ownPost, id(850)]);
+      await denied(friend, "select reply_to_comment($1,$2,$3,$4)", args);
+      await denied(viewer, "select reply_to_comment($1,$2,$3,$4)", [
+        ownPost,
+        id(850),
+        id(851),
+        "Changed",
+      ]);
+      await denied(viewer, "select reply_to_comment($1,$2,$3,$4)", [
+        publicPost,
+        id(850),
+        id(852),
+        "Wrong post",
+      ]);
+      await denied(viewer, "select reply_to_comment($1,$2,$3,$4)", [
+        ownPost,
+        id(851),
+        id(852),
+        "Nested",
+      ]);
+      await denied(viewer, "select reply_to_comment($1,$2,$3,$4)", [
+        hiddenPost,
+        id(850),
+        id(852),
+        "Private",
+      ]);
+      await user(
+        viewer,
+        "insert into blocks(blocker_id,blocked_id) values($1,$2)",
+        [viewer, commenter],
+      );
+      assert.equal(await thread(viewer), null);
+      await denied(viewer, "select reply_to_comment($1,$2,$3,$4)", [
+        ownPost,
+        id(850),
+        id(852),
+        "Blocked",
+      ]);
+      await user(viewer, "delete from blocks where blocked_id=$1", [commenter]);
+      await user(commenter, "delete from comments where id=$1", [id(850)]);
+      assert.equal(await thread(viewer), null);
+      assert.equal(
+        (await db.query("select id from comments where id=$1", [id(851)])).rows
+          .length,
+        0,
+      );
+    },
+  );
+  await t.test(
     "block rules filter counts, lists and ranking engagement and own deletion works",
     async () => {
       await user(commenter, "select set_post_kudos($1,true)", [publicPost]);

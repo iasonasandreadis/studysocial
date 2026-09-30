@@ -34,7 +34,7 @@ export default async function Notifications({
     follow: "followed you",
     follow_request: "requested to follow you",
     follow_accepted: "accepted your follow request",
-    kudos: "gave your post kudos",
+    kudos: "liked your post",
     comment: "commented on your post",
   };
   return (
@@ -81,7 +81,7 @@ export default async function Notifications({
           <div className="profile-empty">
             <h2>You’re all caught up.</h2>
             <p>
-              Follows, requests, kudos and comments will appear here when they
+              Follows, requests, likes and comments will appear here when they
               happen.
             </p>
           </div>

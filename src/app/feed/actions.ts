@@ -30,13 +30,14 @@ export async function changeKudos(
       return { error: "Please wait a minute before trying again." };
     if (error)
       return {
-        error: "Couldn’t update kudos. Refresh to check access, then retry.",
+        error:
+          "Couldn’t update your like. Refresh to check access, then retry.",
       };
   } catch {
     return { error: "Connection interrupted. Retry to save your choice." };
   }
   invalidate(id);
-  return { message: wanted === "yes" ? "Kudos given." : "Kudos removed." };
+  return { message: wanted === "yes" ? "Post liked." : "Like removed." };
 }
 export async function addComment(
   _state: InteractionState,
@@ -45,15 +46,28 @@ export async function addComment(
   const { supabase } = await requireOnboarded();
   const id = String(form.get("post_id")),
     commentId = String(form.get("comment_id")),
-    body = commentBody(form.get("body"));
-  if (!uuidPattern.test(id) || !uuidPattern.test(commentId) || !body)
+    body = commentBody(form.get("body")),
+    parent = String(form.get("parent_id") ?? "");
+  if (
+    !uuidPattern.test(id) ||
+    !uuidPattern.test(commentId) ||
+    !body ||
+    (parent && !uuidPattern.test(parent))
+  )
     return { error: "Write a comment between 1 and 1,000 characters." };
   try {
-    const { error } = await supabase.rpc("add_post_comment", {
-      target: id,
-      comment_id: commentId,
-      content: body,
-    });
+    const { error } = parent
+      ? await supabase.rpc("reply_to_comment", {
+          target: id,
+          parent_id: parent,
+          comment_id: commentId,
+          content: body,
+        })
+      : await supabase.rpc("add_post_comment", {
+          target: id,
+          comment_id: commentId,
+          content: body,
+        });
     if (error?.code === "P0001")
       return { error: "Please wait a minute before trying again." };
     if (error)

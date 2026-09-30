@@ -659,3 +659,98 @@ h1,
 .post-composer .photo-picker .field-hint {
   font-size: 12px;
 }
+
+/* Filled links need their own text color, including inside .form-links. */
+a.button,
+.form-links a.button {
+  color: var(--surface);
+  background: var(--ink);
+  text-decoration: none;
+}
+.profile-avatar,
+.avatar-preview {
+  background: var(--soft);
+  color: var(--ink);
+}
+.compact-totals {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block: 20px;
+}
+.compact-totals strong {
+  font-size: clamp(20px, 5vw, 28px);
+}
+.weekly-card {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 18px 14px;
+  margin-block: 16px;
+}
+.weekly-card h2 {
+  font-size: 17px;
+  margin-bottom: 16px;
+}
+.week-chart {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.week-chart li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.day-value {
+  font-size: 10px;
+  min-height: 28px;
+  text-align: center;
+  color: var(--muted);
+}
+.day-name {
+  font-size: 11px;
+  color: var(--muted);
+}
+.day-track {
+  height: 90px;
+  width: min(100%, 28px);
+  background: var(--soft);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: end;
+}
+.day-fill {
+  width: 100%;
+  background: var(--ink);
+  border-radius: 8px;
+}
+.goal-track {
+  height: 6px;
+  background: var(--soft);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.goal-track > div {
+  height: 100%;
+  background: var(--ink);
+}
+.subject-totals {
+  list-style: none;
+  padding: 0;
+  margin-block: 16px;
+}
+.subject-totals li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block: 12px;
+  font-size: 14px;
+}
+.avatar-form input[type="file"] {
+  max-width: 100%;
+  font-size: 12px;
+}

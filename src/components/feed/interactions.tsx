@@ -50,13 +50,24 @@ export function Kudos({ id, activity }: { id: string; activity: Activity }) {
     </form>
   );
 }
-export function CommentForm({ postId, id }: { postId: string; id: string }) {
+export function CommentForm({
+  postId,
+  id,
+  parentId,
+}: {
+  postId: string;
+  id: string;
+  parentId?: string;
+}) {
   const [state, action, pending] = useActionState(addComment, {});
   if (state.completedId)
     return (
       <p role="status" className="form-notice">
         Comment added.{" "}
-        <a className="text-button" href={`/posts/${postId}#comments`}>
+        <a
+          className="text-button"
+          href={`/posts/${postId}${parentId ? `?thread=${parentId}` : ""}#comments`}
+        >
           View latest comments or write another
         </a>
       </p>
@@ -69,20 +80,21 @@ export function CommentForm({ postId, id }: { postId: string; id: string }) {
     >
       <input type="hidden" name="post_id" value={postId} />
       <input type="hidden" name="comment_id" value={id} />
+      {parentId && <input type="hidden" name="parent_id" value={parentId} />}
       <fieldset disabled={pending}>
         <label>
-          Add a comment
+          {parentId ? "Your reply" : "Add a comment"}
           <textarea
             name="body"
             required
             minLength={1}
             maxLength={1000}
             rows={3}
-            placeholder="A little encouragement goes a long way."
+            placeholder={parentId ? "Write a reply…" : "Write a comment…"}
           />
         </label>
         <button type="submit" className="button">
-          {pending ? "Posting…" : "Post comment"}
+          {pending ? "Posting…" : parentId ? "Reply" : "Post"}
         </button>
       </fieldset>
       {state.error && (

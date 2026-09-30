@@ -103,3 +103,26 @@ test("failed conversion and excessive decoded dimensions release bitmap memory",
     assert.equal(s.closed(), true);
   }
 });
+
+test("avatar preparation resizes even a small file and obeys its smaller output limit", async () => {
+  const s = setup({ width: 4032, height: 3024 });
+  const photo = new File(["small"], "avatar.jpg", { type: "image/jpeg" });
+  await s.prepare(photo, {
+    maxBytes: 1024 * 1024,
+    longEdge: 768,
+    alwaysResize: true,
+  });
+  assert.equal(s.canvas.width, 768);
+  assert.equal(s.canvas.height, 576);
+  assert.equal(s.closed(), true);
+  const oversized = setup({
+    blob: new Blob([new Uint8Array(2 * 1024 * 1024)]),
+  });
+  await assert.rejects(
+    oversized.prepare(photo, {
+      maxBytes: 1024 * 1024,
+      longEdge: 768,
+      alwaysResize: true,
+    }),
+  );
+});

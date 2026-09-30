@@ -178,3 +178,29 @@ samples before: 3.272, 0.720, 0.485 seconds; after: 1.233, 0.424, 0.495 seconds.
 These three-request samples include cold-start/network variation and do not
 establish an authenticated interaction speedup. Code backed up in commit `856cc74`.
 No new human setup is needed for this update.
+
+## September 30 — phone progress, avatars and comment replies
+
+Replaced Safari-native meter bars with a compact neutral seven-day chart. The
+progress screen now leads with today/this-week totals; optional goal, subject
+breakdown and timezone controls are secondary. History stays on its existing tab.
+Fixed filled-link text contrast in both themes and dark avatar initials.
+
+Avatar selection now prepares JPEG/PNG/WebP files up to 20 MB in the browser,
+resizing to a 768px long edge and <=1 MB before the existing server validation,
+512px crop and metadata stripping. Preview, preparation errors and disabled save
+state are visible. HEIC is still unsupported. Actual production photo saving was
+not exercised on a user's account. Browser fixture proved 4032x3024 becomes 768x576.
+
+Added one-level persisted comment threads via migration 202609300013. Reply links
+open the parent and paginated replies; retry IDs, parent/post matching, block rules
+and private-profile fields are checked in SQL. Direct parent-column writes stay
+ungranted. Existing parent deletion cascades to replies. UI uses likes instead of
+kudos; internal schema names are preserved. DMs are not implemented; asked whether
+the first version should be mutual followers only or use message requests.
+
+93 tests pass, including reply authorization/duplicate/cascade coverage and avatar
+resize bounds. Hosted migration applied and DB lint passes. Local preview checked
+at 320px, 390px and 1280px, without horizontal overflow; button contrast checked
+in both themes. Preview used clearly labelled example values and was removed
+before deployment. Screenshot: ../studysocial-review/progress-refresh.png.
