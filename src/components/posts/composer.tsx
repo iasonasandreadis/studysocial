@@ -1,4 +1,5 @@
 "use client";
+import { StudyHighlight } from "@/components/posts/study-highlight";
 import Link from "next/link";
 import Image from "next/image";
 import { useActionState, useEffect, useRef, useState } from "react";
@@ -33,7 +34,7 @@ export function Composer({
     [preview, setPreview] = useState(false);
   const [subject, setSubject] = useState(initialSession?.subject_id ?? ""),
     [minutes, setMinutes] = useState("");
-  const [audience, setAudience] = useState("private"),
+  const [audience, setAudience] = useState(isPrivate ? "private" : "public"),
     [session, setSession] = useState(initialSession?.id ?? ""),
     [show, setShow] = useState(Boolean(initialSession)),
     [caption, setCaption] = useState(""),
@@ -79,12 +80,13 @@ export function Composer({
           value={sessions.find((s) => s.id === session)?.subject_id ?? ""}
         />
       )}
-      {initialSession && (
-        <p className="form-notice">
-          Your completed session is selected. Its subject and optional duration
-          can be shared; private notes stay private. Nothing is published until
-          you preview and confirm.
-        </p>
+      {session && show && (
+        <StudyHighlight
+          seconds={
+            sessions.find((s) => s.id === session)?.duration_seconds ?? 0
+          }
+          subject={subjects.find((s) => s.id === subject)?.labels.en}
+        />
       )}
       <fieldset disabled={pending || preparing}>
         <div hidden={preview}>
@@ -149,10 +151,7 @@ export function Composer({
               onChange={(e) => setCaption(e.target.value)}
             />
           </label>
-          <details
-            className="optional-details"
-            open={initialSession || initialCommunity ? true : undefined}
-          >
+          <details className="optional-details">
             <summary>More options</summary>
             <label>
               Image description <span className="optional">(optional)</span>
@@ -209,9 +208,7 @@ export function Composer({
                   ))}
                 </select>
                 <span className="field-hint">
-                  Your most recent 100 completed sessions (dates in UTC). A
-                  session can be linked to one post. Personal session notes are
-                  never shared.
+                  Choose a saved session. Notes stay private.
                 </span>
               </label>
             ) : (
@@ -267,8 +264,7 @@ export function Composer({
                 ))}
               </select>
               <span className="field-hint">
-                Only communities you belong to are listed. Posting here does not
-                override your account or post privacy.
+                Your post keeps its selected audience.
               </span>
             </label>
           </details>
@@ -281,7 +277,7 @@ export function Composer({
             >
               <option value="private">Only me</option>
               <option value="followers">Approved followers</option>
-              <option value="public">Anyone signed in</option>
+              <option value="public">Everyone on StudySocial</option>
             </select>
             <span className="field-hint">
               {audience === "private"

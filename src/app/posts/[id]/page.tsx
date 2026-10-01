@@ -1,17 +1,11 @@
+import { Comments } from "@/components/feed/comments";
+import { StudyHighlight } from "@/components/posts/study-highlight";
 import { ShareButton } from "@/components/posts/share-button";
 import Link from "next/link";
 import { ReportControl } from "@/components/safety/controls";
 import { randomUUID } from "node:crypto";
-import {
-  Kudos,
-  CommentForm,
-  DeleteComment,
-} from "@/components/feed/interactions";
-import {
-  relativeTime,
-  type Activity,
-  type PostComment,
-} from "@/lib/feed/types";
+import { Kudos } from "@/components/feed/interactions";
+import { type Activity, type PostComment } from "@/lib/feed/types";
 import { pageNumber } from "@/lib/feed/validation";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -19,7 +13,7 @@ import { ProfileShell } from "@/components/profile/profile-shell";
 import { DeletePostForm } from "@/components/posts/delete-form";
 import { requireOnboarded } from "@/lib/auth/session";
 import { uuidPattern } from "@/lib/posts/validation";
-import { durationLabel, type StudyPost } from "@/lib/posts/types";
+import { type StudyPost } from "@/lib/posts/types";
 export default async function PostDetail({
   params,
   searchParams,
@@ -76,31 +70,33 @@ export default async function PostDetail({
   const commentsPage = pageNumber(query.commentsPage);
   const threadId =
     query.thread && uuidPattern.test(query.thread) ? query.thread : undefined;
-  let parent: PostComment | null = null;
+  let initialThread:
+    | { parent: PostComment; replies: PostComment[] }
+    | undefined;
   let activity: Activity | null = null,
     comments: PostComment[] = [];
   if (post.publication_state === "published") {
     const [a, c] = await Promise.all([
       supabase.rpc("post_activity", { target: id }),
-      threadId
-        ? supabase.rpc("comment_thread", {
-            target: id,
-            parent_id: threadId,
-            page_number: commentsPage,
-          })
-        : supabase.rpc("post_comments", {
-            target: id,
-            page_number: commentsPage,
-          }),
+      supabase.rpc("post_comments", { target: id, page_number: commentsPage }),
     ]);
     if (a.error || c.error) throw new Error("We couldn’t load the comments.");
     if (!a.data || c.data === null) notFound();
     activity = a.data as Activity;
+    comments = c.data as PostComment[];
     if (threadId) {
-      const thread = c.data as { parent: PostComment; replies: PostComment[] };
-      parent = thread.parent;
-      comments = thread.replies;
-    } else comments = c.data as PostComment[];
+      const { data: thread, error } = await supabase.rpc("comment_thread", {
+        target: id,
+        parent_id: threadId,
+        page_number: 0,
+      });
+      if (error) throw new Error("Couldn’t load replies.");
+      if (thread)
+        initialThread = thread as {
+          parent: PostComment;
+          replies: PostComment[];
+        };
+    }
   }
   return (
     <ProfileShell>
@@ -151,12 +147,18 @@ export default async function PostDetail({
           </p>
         )}
         {post.caption && <p className="post-caption">{post.caption}</p>}
-        <div className="post-facts">
-          {subject && <span>{subject}</span>}
-          {post.shared_duration_seconds !== null && (
-            <span>{durationLabel(post.shared_duration_seconds)} studied</span>
-          )}
-        </div>
+        {post.shared_duration_seconds !== null ? (
+          <StudyHighlight
+            seconds={post.shared_duration_seconds}
+            subject={subject}
+          />
+        ) : (
+          subject && (
+            <div className="post-facts">
+              <span>{subject}</span>
+            </div>
+          )
+        )}
         {activity && (
           <section
             id="comments"
@@ -164,77 +166,24 @@ export default async function PostDetail({
             aria-labelledby="comments-title"
           >
             <Kudos id={id} activity={activity} />
-            <h2 id="comments-title">
-              {parent ? "Replies" : `Comments · ${activity.comment_count}`}
-            </h2>
-            {parent && (
-              <div className="reply-parent">
-                <Link href={`/posts/${id}#comments`} className="text-button">
-                  ← All comments
-                </Link>
-                <p>
-                  <strong>
-                    {parent.display_name ||
-                      (parent.handle ? `@${parent.handle}` : "Student")}
-                  </strong>
-                </p>
-                <p>{parent.body}</p>
-              </div>
-            )}
-
-            <CommentForm postId={id} id={randomUUID()} parentId={threadId} />
-            {comments.length ? (
-              <ul className="comment-list">
-                {comments.slice(0, 20).map((c) => (
-                  <li key={c.id}>
-                    <header>
-                      {c.handle ? (
-                        <Link href={`/u/${c.handle}`}>
-                          <strong>{c.display_name || `@${c.handle}`}</strong>
-                        </Link>
-                      ) : (
-                        <strong>Student</strong>
-                      )}
-                      <time
-                        dateTime={c.created_at}
-                        title={new Date(c.created_at).toISOString()}
-                      >
-                        {relativeTime(c.created_at)}
-                      </time>
-                    </header>
-                    <p>{c.body}</p>
-                    {!threadId && (
-                      <Link
-                        className="text-button"
-                        href={`/posts/${id}?thread=${c.id}#comments`}
-                      >
-                        Reply · View replies
-                      </Link>
-                    )}
-                    {c.own && <DeleteComment postId={id} id={c.id} />}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="form-notice">
-                {commentsPage
-                  ? "No more comments on this page."
-                  : threadId
-                    ? "No replies yet."
-                    : "Be the first to comment."}
-              </p>
-            )}
+            <h2 id="comments-title">Comments</h2>
+            <Comments
+              key={`${id}:${commentsPage}`}
+              postId={id}
+              comments={comments.slice(0, 20)}
+              initialThread={initialThread}
+            />
             <nav className="pagination" aria-label="Comment pages">
               {commentsPage > 0 && (
                 <Link
-                  href={`/posts/${id}?commentsPage=${commentsPage - 1}${threadId ? `&thread=${threadId}` : ""}#comments`}
+                  href={`/posts/${id}?commentsPage=${commentsPage - 1}#comments`}
                 >
                   ← Previous
                 </Link>
               )}
               {comments.length > 20 && (
                 <Link
-                  href={`/posts/${id}?commentsPage=${commentsPage + 1}${threadId ? `&thread=${threadId}` : ""}#comments`}
+                  href={`/posts/${id}?commentsPage=${commentsPage + 1}#comments`}
                 >
                   Next →
                 </Link>

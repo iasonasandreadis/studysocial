@@ -62,8 +62,9 @@ phase and its checks before moving on. The supplied pack ends at 12 (thirteen ph
 - **Study-to-post:** a completed session can prefill an optional sharing composer.
   One session may remain unshared; retrying publication must not duplicate a post.
 - **Motivating stats:** own study time, sessions, subjects, and gentle progress over
-  time. Define paused time, day boundaries and timezone consistently. Public stats
-  require a deliberate visibility choice. No shame-based copy or hours leaderboard.
+  time. Define paused time, day boundaries and timezone consistently. Profiles show today/week totals and a consecutive completed-study-day streak. A live
+  indicator reflects an active timer under its 24-hour cap. Public totals/streaks
+  and live status have separate opt-in switches and follow profile/block visibility. No shame-based copy or hours leaderboard.
 - **In-app notifications:** real follow/request, kudos, comment and relevant community
   events, read/unread state, pagination and preferences. Deduplicate events, avoid
   self-notifications, and remove inaccessible previews when permissions change.
@@ -160,3 +161,11 @@ until a final hardening phase. Each phase must remain useful, report limitations
 update setup guidance and pass relevant typecheck/lint/build/tests. Later acceptance
 must include real persistence, unauthorized-access tests and responsive error/empty
 states. No mock data or success toasts may stand in for an unfinished core feature.
+
+## October 1 refinement
+New posts from public accounts default to everyone signed in; private accounts
+retain Only me. Explicit preview and server audience enforcement remain. Linked
+study time is prominent on posts and in the composer. Comment replies expand
+inline below their parent and use one reusable composer with a reply target.
+Streaks count positive completed study time by the user's configured local date;
+yesterday's consecutive run remains until today ends. No rankings or penalties.

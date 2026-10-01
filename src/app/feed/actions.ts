@@ -107,3 +107,31 @@ export async function removeComment(
   invalidate(id);
   return { message: "Your comment has been removed." };
 }
+
+export async function readCommentThread(
+  postId: string,
+  parentId: string,
+  page: number,
+) {
+  const { supabase } = await requireOnboarded();
+  if (
+    !uuidPattern.test(postId) ||
+    !uuidPattern.test(parentId) ||
+    !Number.isInteger(page) ||
+    page < 0 ||
+    page > 10000
+  )
+    return { error: "Comment unavailable." };
+  const { data, error } = await supabase.rpc("comment_thread", {
+    target: postId,
+    parent_id: parentId,
+    page_number: page,
+  });
+  if (error || !data) return { error: "This thread is no longer available." };
+  return {
+    thread: data as {
+      parent: import("@/lib/feed/types").PostComment;
+      replies: import("@/lib/feed/types").PostComment[];
+    },
+  };
+}

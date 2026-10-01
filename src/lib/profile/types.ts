@@ -25,6 +25,8 @@ export type Connection = {
   display_name: string | null;
 };
 export type ProfileSettings = {
+  share_study_totals: boolean;
+  share_study_live: boolean;
   academic_year: string;
   academic_direction: string;
   goal_text: string;

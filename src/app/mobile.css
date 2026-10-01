@@ -754,3 +754,224 @@ a.button,
   max-width: 100%;
   font-size: 12px;
 }
+.study-highlight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  margin: 14px 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--soft);
+}
+.study-highlight > svg {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.study-highlight > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.study-highlight span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.study-highlight strong {
+  font-size: clamp(23px, 6vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+}
+.post-composer .study-highlight {
+  margin: 0 0 20px;
+}
+.post-composer .optional-details > label,
+.post-composer .optional-details > .field-hint {
+  margin-top: 18px;
+}
+.post-composer .optional-details > summary {
+  margin-bottom: 16px;
+}
+.post-composer > fieldset > div > label,
+.post-composer > fieldset > div > .optional-details {
+  margin-bottom: 20px;
+}
+.session-result {
+  text-align: center;
+  padding-block: 28px;
+}
+.session-result .timer-result {
+  margin: 28px 0 10px;
+  font-size: clamp(36px, 10vw, 60px);
+}
+.session-result h2 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+.session-result > .button {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+.profile-study {
+  margin: 20px 0;
+}
+.study-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 16px 0;
+  border-block: 1px solid var(--line);
+}
+.study-metrics > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.study-metrics strong {
+  font-size: clamp(14px, 3.8vw, 19px);
+}
+.study-metrics span,
+.study-sharing-link {
+  font-size: 11px;
+  color: var(--muted);
+}
+.study-sharing-link {
+  display: inline-block;
+  padding-block: 12px;
+}
+.studying-now {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.studying-now > span {
+  width: 8px;
+  height: 8px;
+  background: var(--ink);
+  border-radius: 50%;
+}
+.inline-comments {
+  margin-top: 18px;
+}
+.comment-thread {
+  margin-bottom: 20px;
+}
+.comment-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-block: 12px;
+}
+.comment-avatar {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--soft);
+  font-size: 12px;
+}
+.comment-content {
+  flex: 1;
+  min-width: 0;
+}
+.comment-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.comment-content p strong {
+  margin-right: 6px;
+}
+.comment-content p > span {
+  white-space: pre-wrap;
+}
+.comment-tools {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.comment-tools button,
+.view-replies,
+.comment-input-row button,
+.replying-to button {
+  border: 0;
+  background: none;
+  color: inherit;
+  padding: 8px 0;
+  font: inherit;
+  cursor: pointer;
+}
+.comment-tools button {
+  font-weight: 600;
+  min-height: 32px;
+}
+.comment-tools details summary {
+  cursor: pointer;
+  padding: 8px;
+}
+.comment-reply {
+  margin-left: 40px;
+}
+.view-replies {
+  margin-left: 40px;
+  color: var(--muted);
+  font-size: 12px;
+  min-height: 40px;
+}
+.comment-composer {
+  position: sticky;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+  z-index: 10;
+}
+.comment-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.comment-input-row textarea {
+  flex: 1;
+  min-width: 0;
+  resize: vertical;
+  max-height: 160px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--soft);
+  padding: 12px 14px;
+  font-size: 16px;
+  color: var(--ink);
+}
+.comment-input-row button {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  min-height: 44px;
+}
+.comment-input-row button:disabled {
+  opacity: 0.45;
+}
+.replying-to {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 0 6px 8px;
+}
+.replying-to button {
+  font-size: 22px;
+  width: 40px;
+}

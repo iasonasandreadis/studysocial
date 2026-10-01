@@ -210,3 +210,32 @@ https://studysocial-iota.vercel.app, source `2a9a0a1` pushed to GitHub.
 Final local/hosted builds, lint and typecheck passed. Public home returns 200;
 temporary `/ui-review` returns 404. No live personal posts, replies or profile
 photos were created during verification. No new human setup is required.
+
+## October 1 — visible study activity and inline replies
+
+Public-account composers now default to the public signed-in audience; private
+accounts keep Only me. Existing posts are unchanged. Study durations use a larger
+card on feed, post detail and linked-session composition. Session completion and
+composer guidance/spacing are shorter.
+
+Replies stay below their root comment with expandable replies, reply counts,
+loading/error states and one reusable input. Reply targets focus the input; replies
+to replies remain in the root thread with an @handle prefix. Successful submission
+clears the input and loads saved replies, without a full-page confirmation card.
+Reply pages put the newest first so new replies remain visible in busy threads.
+Existing thread links still work. Deletes request confirmation, including cascade
+wording for parent deletion. Permission rules stay in the existing tested RPCs.
+
+Profiles show own today/week totals and streaks, with separate opt-in switches for
+sharing totals/streaks and running-timer status. Sharing follows profile access
+and blocking; no raw session or note records are exposed. Streaks count completed
+positive-duration days in the owner's timezone, including a run ending yesterday.
+Active/paused/discarded time is excluded from totals. Live status omits paused and
+capped timers. Profile activity refreshes every 30 seconds while visible/online.
+Existing users are not silently opted in to activity sharing.
+
+94 tests pass, including profile sharing/privacy/blocking, local-date streaks,
+missed days, live/paused/capped/resumed timers and reply counts. Phone previews at
+320px/390px and desktop at 1280px fit without horizontal overflow. Reply focusing
+and public audience default verified in the browser using clearly labelled local
+example data; no real posts or accounts mutated. Temporary preview removed.

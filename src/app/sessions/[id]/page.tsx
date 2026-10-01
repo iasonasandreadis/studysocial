@@ -40,26 +40,17 @@ export default async function SessionResult({
   if (linkError) throw new Error("Couldn’t load the sharing status.");
   return (
     <ProfileShell>
-      <section className="onboarding-card">
-        <p className="eyebrow">TIME WELL SPENT</p>
+      <section className="onboarding-card session-result">
         <h1>Session complete.</h1>
         <p className="timer-result">{durationLabel(s.duration_seconds)}</p>
         <h2>{subject}</h2>
-        <p className="account-description">
-          Saved privately. Finished{" "}
-          {new Date(s.ended_at).toLocaleString("en-GB", { timeZone: "UTC" })}{" "}
-          UTC.
-        </p>
+        <p className="field-hint">Saved to your history · Only you</p>
         {s.notes && (
           <section>
             <h3>Your private note</h3>
             <p className="post-caption">{s.notes}</p>
           </section>
         )}
-        <p className="form-notice">
-          Keep this moment for yourself, or share a photo of your progress. Your
-          private note is never added to the post.
-        </p>
         <Link
           className="button"
           href={linked ? `/posts/${linked.id}` : `/posts/new?session=${id}`}

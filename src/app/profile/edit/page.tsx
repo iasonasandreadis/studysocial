@@ -1,3 +1,4 @@
+import { StudyVisibility } from "@/components/profile/study-visibility";
 import Link from "next/link";
 import { requireOnboarded } from "@/lib/auth/session";
 import { ProfileShell } from "@/components/profile/profile-shell";
@@ -16,7 +17,7 @@ export default async function EditProfile() {
     supabase
       .from("user_settings")
       .select(
-        "academic_year,academic_direction,goal_text,target_university,target_program,share_year,share_direction,share_subjects,share_goal,share_target",
+        "academic_year,academic_direction,goal_text,target_university,target_program,share_year,share_direction,share_subjects,share_goal,share_target,share_study_totals,share_study_live",
       )
       .eq("user_id", user.id)
       .single<ProfileSettings>(),
@@ -48,6 +49,10 @@ export default async function EditProfile() {
           Choose how you introduce yourself and what you share.
         </p>
         <AvatarForm url={url} hasAvatar={Boolean(p.data.avatar_path)} />
+        <StudyVisibility
+          totals={s.data.share_study_totals}
+          live={s.data.share_study_live}
+        />
         <EditForm
           profile={p.data}
           settings={s.data}

@@ -19,6 +19,7 @@ export type FeedPost = {
   imageUrl?: string | null;
 };
 export type PostComment = {
+  reply_count?: number;
   id: string;
   body: string;
   created_at: string;

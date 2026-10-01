@@ -309,6 +309,11 @@ test("feeds, exact visible interactions and flat comments preserve database auth
           ])
         )[0].value;
       assert.equal((await thread(viewer)).replies.length, 1);
+      assert.equal(
+        (await comments(viewer, ownPost)).find((c) => c.id === id(850))
+          .reply_count,
+        1,
+      );
       assert.equal((await thread(viewer)).parent.display_name, null);
       assert.equal((await thread(viewer)).replies[0].body, "Reply");
       await denied(null, "select reply_to_comment($1,$2,$3,$4)", args);
@@ -351,6 +356,20 @@ test("feeds, exact visible interactions and flat comments preserve database auth
         "Blocked",
       ]);
       await user(viewer, "delete from blocks where blocked_id=$1", [commenter]);
+      for (let n = 900; n < 922; n++)
+        await db.query(
+          "insert into comments(id,post_id,author_id,body,parent_comment_id) values($1,$2,$3,$4,$5)",
+          [id(n), ownPost, viewer, `Reply ${n}`, id(850)],
+        );
+      assert.equal((await thread(viewer)).replies[0].body, "Reply 921");
+      assert.equal((await thread(viewer)).replies.length, 21);
+      const older = (
+        await user(viewer, "select comment_thread($1,$2,1) as value", [
+          ownPost,
+          id(850),
+        ])
+      )[0].value;
+      assert.equal(older.replies.length, 3);
       await user(commenter, "delete from comments where id=$1", [id(850)]);
       assert.equal(await thread(viewer), null);
       assert.equal(

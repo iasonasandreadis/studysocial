@@ -343,3 +343,10 @@ No new service or key is required. Apply all twelve migrations. Complete session
 open `/progress`, change timezone/goal and compare with your session history. Check
 that another account cannot read your totals. Test bottom navigation at 320px and
 desktop, both themes, keyboard and screen-reader navigation.
+
+## October 1 — study activity and inline replies
+No new service or credentials are needed. Migrations 014–016 are applied to the
+linked project. To share your study totals/streak or running status, open Profile →
+Edit profile → Study activity sharing and choose the two visibility switches.
+Existing users stay opted out until they choose. Public-profile post composers now
+default to everyone signed in; existing posts keep their selected audience.

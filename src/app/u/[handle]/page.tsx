@@ -1,3 +1,5 @@
+import { StudyActivity } from "@/components/profile/study-activity";
+import type { ProfileActivity } from "@/lib/stats/profile-activity";
 import { PhotoGrid } from "@/components/profile/photo-grid";
 import { pageNumber } from "@/lib/feed/validation";
 import Link from "next/link";
@@ -16,6 +18,11 @@ export default async function ProfilePage({
   const { handle } = await params;
   const page = pageNumber((await searchParams).page);
   const { supabase, profile: p } = await loadProfile(handle);
+  const { data: study, error: studyError } = await supabase.rpc(
+    "profile_study_activity",
+    { target: p.id },
+  );
+  if (studyError) throw new Error("Couldn’t load study activity.");
   let avatar: string | null = null;
   if (p.can_view && p.avatar_path) {
     const { data } = await supabase.storage
@@ -100,6 +107,12 @@ export default async function ProfilePage({
                   <strong>{p.following}</strong> Following
                 </Link>
               </div>
+              <StudyActivity
+                key={p.id}
+                target={p.id}
+                initial={study as ProfileActivity | null}
+                own={p.is_self}
+              />
               <details className="profile-about">
                 <summary>About</summary>
                 <div className="profile-details">
