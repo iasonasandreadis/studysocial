@@ -239,3 +239,11 @@ missed days, live/paused/capped/resumed timers and reply counts. Phone previews 
 320px/390px and desktop at 1280px fit without horizontal overflow. Reply focusing
 and public audience default verified in the browser using clearly labelled local
 example data; no real posts or accounts mutated. Temporary preview removed.
+
+Migrations 014–016 applied; hosted database lint passed. Typecheck, lint and local
+Webpack build passed. Hosted Turbopack build passed. Source `d601b2d` pushed;
+deployment `dpl_61bgJw8gi2zKXkTS86osBhT2mQFR` READY at the canonical production URL,
+runtime `arn1`. Home returns 200, temporary preview 404, anonymous Progress sends
+the streaming login redirect. Vercel CLI 62.1.0 returned Not authorized; authenticated
+61.1.0 deployed successfully with the existing login. Use 61.1.0 for now.
+No new technical setup needed. Study sharing remains an individual opt-in.
