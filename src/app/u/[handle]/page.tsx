@@ -1,3 +1,4 @@
+import { StudyGoal } from "@/components/profile/study-goal";
 import { StudyActivity } from "@/components/profile/study-activity";
 import type { ProfileActivity } from "@/lib/stats/profile-activity";
 import { PhotoGrid } from "@/components/profile/photo-grid";
@@ -98,6 +99,13 @@ export default async function ProfilePage({
             </div>
           ) : (
             <>
+              <StudyGoal profile={p} />
+              <StudyActivity
+                key={p.id}
+                target={p.id}
+                initial={study as ProfileActivity | null}
+                own={p.is_self}
+              />
               {p.bio && <p className="profile-bio">{p.bio}</p>}
               <div className="profile-counts">
                 <Link href={`/u/${p.handle}/connections?direction=followers`}>
@@ -107,55 +115,25 @@ export default async function ProfilePage({
                   <strong>{p.following}</strong> Following
                 </Link>
               </div>
-              <StudyActivity
-                key={p.id}
-                target={p.id}
-                initial={study as ProfileActivity | null}
-                own={p.is_self}
-              />
-              <details className="profile-about">
-                <summary>About</summary>
-                <div className="profile-details">
-                  {p.academic_year && (
-                    <div>
-                      <span>Academic year</span>
-                      <p>{p.academic_year}</p>
-                    </div>
-                  )}
-                  {p.academic_direction && (
-                    <div>
-                      <span>Study direction</span>
-                      <p>{p.academic_direction}</p>
-                    </div>
-                  )}
-                  {(p.target_university || p.target_program) && (
-                    <div>
-                      <span>Working toward</span>
-                      <p>
-                        {[p.target_program, p.target_university]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </p>
-                    </div>
-                  )}
-                  {p.goal_text && (
-                    <div>
-                      <span>A personal goal</span>
-                      <p>{p.goal_text}</p>
-                    </div>
-                  )}
-                </div>
-                {!!p.subjects?.length && (
-                  <section className="profile-subjects">
-                    <h2>Subjects</h2>
-                    <div>
-                      {p.subjects.map((s, i) => (
-                        <span key={i}>{s.en ?? Object.values(s)[0]}</span>
-                      ))}
-                    </div>
-                  </section>
-                )}
-              </details>
+              {(p.academic_year || p.academic_direction) && (
+                <details className="profile-about">
+                  <summary>Academic details</summary>
+                  <div className="profile-details">
+                    {p.academic_year && (
+                      <div>
+                        <span>Academic year</span>
+                        <p>{p.academic_year}</p>
+                      </div>
+                    )}
+                    {p.academic_direction && (
+                      <div>
+                        <span>Study direction</span>
+                        <p>{p.academic_direction}</p>
+                      </div>
+                    )}
+                  </div>
+                </details>
+              )}
               <PhotoGrid
                 authorId={p.id}
                 own={p.is_self}

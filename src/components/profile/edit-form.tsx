@@ -115,6 +115,7 @@ export function EditForm({
           <label>
             Target university
             <input
+              id="study-goal"
               name="target_university"
               maxLength={160}
               defaultValue={settings.target_university}

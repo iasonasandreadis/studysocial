@@ -247,3 +247,17 @@ runtime `arn1`. Home returns 200, temporary preview 404, anonymous Progress send
 the streaming login redirect. Vercel CLI 62.1.0 returned Not authorized; authenticated
 61.1.0 deployed successfully with the existing login. Use 61.1.0 for now.
 No new technical setup needed. Study sharing remains an individual opt-in.
+
+## October 1 — goal-first profiles
+
+Moved the authorized shared target, personal goal and subjects out of About into
+an always-visible goal card above study activity, bio, connections and posts.
+Added an Edit goal shortcut and fixed Subjects heading/chip spacing and wrapping.
+Academic year/direction remain secondary. Existing goal/target/subject sharing
+projection is preserved; locked profiles never render the card. No database change.
+Documented the original 00–12 roadmap and distinguished proposed next work.
+
+Typecheck, lint, all 94 tests and local Webpack production build passed. A temporary
+local example-data preview verified 320/390px phones and 1280px desktop without
+horizontal overflow; the Subjects heading has a 12px gap above chips. Removed the
+preview before building. No new human setup is required for this change.
