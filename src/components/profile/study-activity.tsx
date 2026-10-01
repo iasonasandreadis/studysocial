@@ -1,4 +1,5 @@
 "use client";
+import { StudySymbol } from "./study-symbol";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { readProfileActivity } from "@/app/profile/study-actions";
@@ -71,15 +72,22 @@ export function StudyActivityView({
       )}
       {activity.today_seconds !== null && (
         <div className="study-metrics">
-          <div>
-            <strong>{durationLabel(activity.today_seconds)}</strong>
+          <div className="metric-today">
+            <StudySymbol kind="clock" />
+            <strong>
+              {durationLabel(activity.today_seconds).replace(/^0 min /, "")}
+            </strong>
             <span>Today</span>
           </div>
-          <div>
-            <strong>{durationLabel(activity.week_seconds ?? 0)}</strong>
+          <div className="metric-week">
+            <StudySymbol kind="week" />
+            <strong>
+              {durationLabel(activity.week_seconds ?? 0).replace(/^0 min /, "")}
+            </strong>
             <span>This week</span>
           </div>
-          <div>
+          <div className="metric-streak">
+            <StudySymbol kind="flame" />
             <strong>
               {activity.streak_days ?? 0}{" "}
               {(activity.streak_days ?? 0) === 1 ? "day" : "days"}

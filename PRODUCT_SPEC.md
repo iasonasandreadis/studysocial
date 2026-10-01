@@ -170,3 +170,5 @@ study time is prominent on posts and in the composer. Comment replies expand
 inline below their parent and use one reusable composer with a reply target.
 Streaks count positive completed study time by the user's configured local date;
 yesterday's consecutive run remains until today ends. No rankings or penalties.
+
+Profile graphics use a restrained lavender goal illustration and clock/calendar/flame icons on separate effort cards. Decorative paths are not progress charts; all displayed totals remain real. Support both system themes without animation or added image downloads.

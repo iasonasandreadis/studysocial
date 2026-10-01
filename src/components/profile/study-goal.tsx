@@ -10,8 +10,42 @@ export function StudyGoal({ profile: p }: { profile: SocialProfile }) {
   if (!target && !p.goal_text && !p.subjects?.length && !p.is_self) return null;
   return (
     <section className="profile-goal" aria-labelledby="study-goal-heading">
+      <div className="goal-art" aria-hidden="true">
+        <svg viewBox="0 0 300 110" fill="none">
+          <path
+            d="M-10 100C40 100 22 20 95 40S170 105 235 35"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeDasharray="4 6"
+          />
+          <g transform="translate(230 48) rotate(-18)">
+            <circle
+              r="34"
+              fill="currentColor"
+              fillOpacity=".08"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <circle r="22" stroke="currentColor" strokeWidth="1.5" />
+            <circle r="9" fill="currentColor" />
+            <path
+              d="m0 0 39-31m-3-9 3 9 10 1"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+          <path
+            d="m56 12 2 7 7 2-7 2-2 7-2-7-7-2 7-2Zm100 57 2 6 6 2-6 2-2 6-2-6-6-2 6-2Z"
+            fill="currentColor"
+          />
+          <circle cx="134" cy="20" r="3" fill="currentColor" />
+        </svg>
+        <span>ONE SESSION CLOSER</span>
+      </div>
       <div className="profile-goal-heading">
-        <h2 id="study-goal-heading">Working toward</h2>
+        <h2 id="study-goal-heading">The goal</h2>
         {p.is_self && <Link href="/profile/edit#study-goal">Edit goal</Link>}
       </div>
       {target && <p className="profile-goal-target">{target}</p>}

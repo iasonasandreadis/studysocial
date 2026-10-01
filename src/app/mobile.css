@@ -1042,3 +1042,136 @@ a.button,
 #study-goal {
   scroll-margin-top: 120px;
 }
+
+/* A small illustrated destination card, with real effort underneath. */
+.profile-goal {
+  padding: 0 20px 20px;
+  background: #ede9ff;
+  color: #29213f;
+  border-color: #dcd5f5;
+}
+.goal-art {
+  position: relative;
+  height: 104px;
+  margin: 0 -20px 14px;
+  overflow: hidden;
+  border-radius: 19px 19px 0 0;
+  background: #e0d8ff;
+  color: #63508c;
+}
+.goal-art svg {
+  position: absolute;
+  right: 0;
+  width: 300px;
+  height: 110px;
+}
+.goal-art > span {
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  background: #e0d8ff;
+  padding: 4px 6px 4px 0;
+}
+.profile-goal-heading h2 {
+  letter-spacing: 0;
+  line-height: 1.5;
+  color: #655778;
+}
+.profile-goal-heading a {
+  color: #49385f;
+}
+.profile-goal-target {
+  margin-top: 7px;
+}
+.profile-goal-text,
+.profile-goal-empty {
+  color: #554764;
+}
+.profile-goal .profile-subjects {
+  margin-top: 20px;
+}
+.profile-goal .profile-subjects h3 {
+  color: #655778;
+  font-size: 11px;
+}
+.profile-goal .profile-subjects span {
+  background: #ffffff70;
+  border-color: #d6cdea;
+  font-size: 11px;
+  padding: 6px 10px;
+}
+.study-metrics {
+  border: 0;
+  padding: 0;
+  gap: 8px;
+}
+.study-metrics > div {
+  padding: 14px 10px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--soft);
+  min-width: 0;
+}
+.study-metrics svg {
+  width: 25px;
+  height: 25px;
+  margin-bottom: 8px;
+}
+.metric-today svg {
+  color: #647bc1;
+}
+.metric-week svg {
+  color: #9374c5;
+}
+.metric-streak svg {
+  color: #d48649;
+}
+.study-metrics strong {
+  font-size: clamp(13px, 3.5vw, 18px);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.study-metrics span {
+  font-size: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  .profile-goal {
+    background: #262332;
+    border-color: #393248;
+    color: #f0eaff;
+  }
+  .goal-art {
+    background: #30293f;
+    color: #b9a3ea;
+  }
+  .goal-art > span {
+    background: #30293f;
+  }
+  .profile-goal-heading h2,
+  .profile-goal .profile-subjects h3 {
+    color: #bcb0cf;
+  }
+  .profile-goal-heading a {
+    color: #dcc8ff;
+  }
+  .profile-goal-text,
+  .profile-goal-empty {
+    color: #d1c7df;
+  }
+  .profile-goal .profile-subjects span {
+    background: #ffffff08;
+    border-color: #4a405a;
+  }
+  .metric-today svg {
+    color: #a0b6ff;
+  }
+  .metric-week svg {
+    color: #c8a5fc;
+  }
+  .metric-streak svg {
+    color: #f1b079;
+  }
+}

@@ -261,3 +261,15 @@ Typecheck, lint, all 94 tests and local Webpack production build passed. A tempo
 local example-data preview verified 320/390px phones and 1280px desktop without
 horizontal overflow; the Subjects heading has a 12px gap above chips. Removed the
 preview before building. No new human setup is required for this change.
+
+## October 1 — illustrated profile refresh
+
+Added a lightweight SVG target/path illustration to the goal card, with muted
+lavender colors in both themes. Today/week/streak now have separate compact cards
+with clock/calendar/flame icons. Short durations omit the redundant zero minutes.
+Decorative graphics are hidden from assistive technology and do not imply measured
+goal completion. No dependencies, image downloads or database changes.
+
+Verified dark/light phone layouts, 320px/390px widths and 1280px desktop; no
+horizontal overflow. Removed the labelled local preview before production build.
+Typecheck, lint, diff check and production Webpack build passed. No human setup.
